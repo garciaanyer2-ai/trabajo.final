@@ -7,6 +7,8 @@
 const projectContent = {
     '01_README.md': `# Trabajo Final: Gasto Militar y Calidad Democrática ante el Yihadismo
 
+**🚀 [VER PRESENTACIÓN INTERACTIVA (LIVE)](https://garciaanyer2-ai.github.io/trabajo.final/)**
+
 **Alumno:** Anyerlin Ravelo
 **Fecha:** 08/02/2026
 
