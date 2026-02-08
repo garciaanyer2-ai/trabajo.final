@@ -1,55 +1,87 @@
 ================================================================================
-INSTRUCCIONES DE DESPLIEGUE Y EJECUCIÓN - TRABAJO FINAL (QOG)
+GUÍA COMPLETA DE DESPLIEGUE, EJECUCIÓN Y SINCRONIZACIÓN - TRABAJO FINAL (QOG)
 Tema: Terrorismo y Yihadismo (Bloques A, B y C)
+Alumno: Anyerlin Ravelo
 ================================================================================
 
-IMPORTANTE: Todos los comandos deben ejecutarse desde la carpeta del proyecto:
-> cd d:\mco\trabajo_final
-
-PASO 0: ELEGIR EL ENTORNO DE EJECUCIÓN
---------------------------------------------------------------------------------
-Elige UNA de estas dos opciones para configurar la infraestructura:
-
-OPCIÓN A: EJECUCIÓN CON DOCKER (Recomendado para Spark y Postgres)
-   1. Asegúrate de estar en `d:\mco\trabajo_final`.
-   2. Iniciar contenedores:
-      > PS> docker-compose up -d
-   3. Verificar estado:
-      > PS> docker-compose ps
-
-OPCIÓN B: EJECUCIÓN LOCAL
-   1. Requiere Python y Spark instalados en Windows.
-   2. Activa tu entorno virtual:
-      > PS> d:\mco\venv\Scripts\Activate.ps1
-   3. Instala dependencias:
-      > (venv) PS> pip install -r requirements.txt
+Esta guía detalla cómo configurar y ejecutar el proyecto en cualquier ordenador,
+así como el procedimiento para mantener el repositorio de GitHub actualizado.
 
 --------------------------------------------------------------------------------
-PASOS DE EJECUCIÓN SECUENCIAL
+1. REQUISITOS PREVIOS (INSTALACIÓN)
 --------------------------------------------------------------------------------
+Antes de empezar, asegúrate de tener instalado en tu sistema:
 
-1. BLOQUE A: DESCARGA DE DATOS
-   > python download_qog.py
+A. Git: Para clonar y sincronizar el código.
+   Descarga: https://git-scm.com/downloads
 
-2. BLOQUE B: PIPELINE ETL CON SPARK
-   Si usas DOCKER (Opción A):
-   > docker exec -it tf_spark_master spark-submit --master spark://spark-master:7077 /opt/bitnami/spark/trabajo_final/pipeline.py
+B. Python (3.10 o superior): Lenguaje principal del proyecto.
+   Descarga: https://www.python.org/downloads/
 
-   Si usas LOCAL (Opción B):
-   > python pipeline.py
-
-3. BLOQUE C: ANÁLISIS Y VISUALIZACIÓN
-   > python analysis.py
+C. Docker Desktop: Necesario para la infraestructura (Spark y PostgreSQL).
+   Descarga: https://www.docker.com/products/docker-desktop/
+   IMPORTANTE: Asegúrate de que Docker esté abierto y funcionando.
 
 --------------------------------------------------------------------------------
-ESTRUCTURA PROFESIONAL DEL PROYECTO
+2. CONFIGURACIÓN INICIAL EN UNA PC NUEVA
 --------------------------------------------------------------------------------
-- /datos: Contiene el dataset original y los resultados procesados (Parquet/PNG).
-- /scripts: Archivos auxiliares de PowerShell.
-- /sql: Scripts de consultas y creación de base de datos.
-- /src: Módulos de utilidad para Python.
-- /docs: (Archivos .md) Reportes y documentación técnica.
+Sigue estos pasos la primera vez que descargues el proyecto:
 
-================================================================================
+1. Clonar el repositorio:
+   > git clone https://github.com/garciaanyer2-ai/trabajo.final.git
+   > cd trabajo.final
+
+2. Crear y activar el entorno virtual (PowerShell):
+   > python -m venv venv
+   > .\venv\Scripts\Activate.ps1
+
+3. Instalar dependencias:
+   > pip install -r requirements.txt
+
+--------------------------------------------------------------------------------
+3. EJECUCIÓN DEL PROYECTO
+--------------------------------------------------------------------------------
+
+PASO A: LEVANTAR INFRAESTRUCTURA (DOCKER)
+   1. Iniciar contenedores:
+      > docker-compose up -d
+   2. Verificar que estén corriendo:
+      > docker ps
+      (Debes ver: tf_postgres, tf_spark_master, tf_spark_worker)
+
+PASO B: EJECUCIÓN SECUENCIAL
+   1. Descargar datos (Bloque A):
+      > python download_qog.py
+
+   2. Procesar ETL con Spark (Bloque B):
+      > docker exec -it tf_spark_master spark-submit --master spark://spark-master:7077 /opt/bitnami/spark/trabajo_final/pipeline.py
+
+   3. Análisis y Visualización (Bloque C):
+      > python analysis.py
+
+--------------------------------------------------------------------------------
+4. VER PRESENTACIÓN WEB INTERACTIVA
+--------------------------------------------------------------------------------
+El proyecto incluye una interfaz premium para exponer los resultados:
+
+1. Simplemente abre el archivo `index.html` en tu navegador favorito.
+2. Navega por las pestañas para ver la arquitectura, resultados y dashboard.
+
+--------------------------------------------------------------------------------
+5. CÓMO ACTUALIZAR TUS CAMBIOS EN GITHUB
+--------------------------------------------------------------------------------
+Cada vez que hagas cambios en el código o documentos y quieras guardarlos online:
+
+1. Abrir terminal en la carpeta del proyecto.
+2. Preparar los archivos:
+   > git add .
+
+3. Guardar los cambios con un mensaje:
+   > git commit -m "Descripción de lo que has cambiado"
+
+4. Subir a GitHub:
+   > git push origin master
+
+--------------------------------------------------------------------------------
 FIN DE LAS INSTRUCCIONES
 ================================================================================
