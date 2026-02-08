@@ -1,0 +1,55 @@
+================================================================================
+INSTRUCCIONES DE DESPLIEGUE Y EJECUCIÓN - TRABAJO FINAL (QOG)
+Tema: Terrorismo y Yihadismo (Bloques A, B y C)
+================================================================================
+
+IMPORTANTE: Todos los comandos deben ejecutarse desde la carpeta del proyecto:
+> cd d:\mco\trabajo_final
+
+PASO 0: ELEGIR EL ENTORNO DE EJECUCIÓN
+--------------------------------------------------------------------------------
+Elige UNA de estas dos opciones para configurar la infraestructura:
+
+OPCIÓN A: EJECUCIÓN CON DOCKER (Recomendado para Spark y Postgres)
+   1. Asegúrate de estar en `d:\mco\trabajo_final`.
+   2. Iniciar contenedores:
+      > PS> docker-compose up -d
+   3. Verificar estado:
+      > PS> docker-compose ps
+
+OPCIÓN B: EJECUCIÓN LOCAL
+   1. Requiere Python y Spark instalados en Windows.
+   2. Activa tu entorno virtual:
+      > PS> d:\mco\venv\Scripts\Activate.ps1
+   3. Instala dependencias:
+      > (venv) PS> pip install -r requirements.txt
+
+--------------------------------------------------------------------------------
+PASOS DE EJECUCIÓN SECUENCIAL
+--------------------------------------------------------------------------------
+
+1. BLOQUE A: DESCARGA DE DATOS
+   > python download_qog.py
+
+2. BLOQUE B: PIPELINE ETL CON SPARK
+   Si usas DOCKER (Opción A):
+   > docker exec -it tf_spark_master spark-submit --master spark://spark-master:7077 /opt/bitnami/spark/trabajo_final/pipeline.py
+
+   Si usas LOCAL (Opción B):
+   > python pipeline.py
+
+3. BLOQUE C: ANÁLISIS Y VISUALIZACIÓN
+   > python analysis.py
+
+--------------------------------------------------------------------------------
+ESTRUCTURA PROFESIONAL DEL PROYECTO
+--------------------------------------------------------------------------------
+- /datos: Contiene el dataset original y los resultados procesados (Parquet/PNG).
+- /scripts: Archivos auxiliares de PowerShell.
+- /sql: Scripts de consultas y creación de base de datos.
+- /src: Módulos de utilidad para Python.
+- /docs: (Archivos .md) Reportes y documentación técnica.
+
+================================================================================
+FIN DE LAS INSTRUCCIONES
+================================================================================

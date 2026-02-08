@@ -1,0 +1,22 @@
+# System Folders
+Mi música/
+Mis imágenes/
+Mis vídeos/
+desktop.ini
+
+# Virtual Environment
+.venv/
+env/
+__pycache__/
+*.pyc
+
+# IDEs
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Large Data Files
+datos/qog/qog_std_ts_jan24.csv

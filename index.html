@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentación Final - Anyerlin Ravelo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <canvas id="particles-canvas"></canvas>
+    <div class="container">
+        <header>
+            <h1>Presentación Final</h1>
+            <p>Análisis de Gasto Militar y Calidad Democrática</p>
+        </header>
+
+        <nav class="tabs-navigation">
+            <button class="tab-btn active" onclick="switchTab('01_README.md', this)">01. Inicio</button>
+            <button class="tab-btn" onclick="switchTab('02_INFRAESTRUCTURA.md', this)">02. Infraestructura</button>
+            <button class="tab-btn" onclick="switchTab('03_RESULTADOS.md', this)">03. Resultados</button>
+            <button class="tab-btn" onclick="switchTab('dashboard', this)">🚀 Dashboard</button>
+            <button class="tab-btn" onclick="switchTab('04_REFLEXION_IA.md', this)">04. Reflexión IA</button>
+            <button class="tab-btn" onclick="switchTab('05_RESPUESTAS.md', this)">05. Comprensión</button>
+            <button class="export-btn" onclick="window.print()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                Exportar PDF
+            </button>
+        </nav>
+
+        <main class="presentation-content">
+            <div id="content-area" class="markdown-body">
+                <!-- El contenido se cargará aquí dinámicamente -->
+                <div style="text-align: center; padding: 100px 0;">
+                    <div class="loader">Cargando presentación...</div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2026 Anyerlin Ravelo - Maestría en Ciberseguridad y Operaciones</p>
+        </footer>
+    </div>
+
+    <!-- Librerías para renderizar Markdown y Charts -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="presentacion.js"></script>
+</body>
+
+</html>
