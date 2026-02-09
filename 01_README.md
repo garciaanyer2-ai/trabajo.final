@@ -27,7 +27,13 @@ completas conforme avanzas.
 
 ## Pregunta de investigacion
 
-¿Cómo ha evolucionado la relación entre el gasto militar y la calidad democrática en países clave afectados por el fenómeno del yihadismo en Europa y Asia Central durante el periodo 2000-2023?
+Presentamos la evolución de nuestra duda metódica, desde una inquietud general hasta una formulación técnica y estructurada:
+
+| Nivel | Formulación de la Pregunta |
+|:---|:---|
+| **🟢 Principiante** | ¿Cómo les va con el dinero de las armas y la democracia a los países que tienen problemas con el terrorismo? |
+| **🔵 Actual** | ¿Cómo ha evolucionado la relación entre el gasto militar y la calidad democrática en países clave afectados por el fenómeno del yihadismo en Europa y Asia Central durante el periodo 2000-2023? |
+| **🔴 Experto** | Estudio econométrico longitudinal sobre la correlación entre la intensidad del gasto militar (GPD_SHARE) y el deterioro de los índices de poliarquía (V-Dem) en estados fronterizos bajo presión asimétrica yihadista: Un análisis comparativo de resiliencia institucional (2000-2023). |
 
 ---
 

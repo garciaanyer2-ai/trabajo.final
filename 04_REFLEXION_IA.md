@@ -32,14 +32,15 @@ Aprendí que en entornos restringidos (donde no puedes instalar Docker o Python 
 
 ### Prompt clave del Bloque A
 
-**Herramienta:** Claude
+**Herramienta:** Claude / ChatGPT
 
-**El prompt que mas te ayudo en este bloque:**
-```
-Necesito un script de PowerShell que lea el archivo qog_std_ts_jan24.csv línea por línea, extraiga solo las columnas ucdp_type1, ucdp_type2, ucdp_type3, ucdp_type4, wdi_gdpcapcur, wdi_pop, ccode, cname y year, y guarde el resultado en un nuevo CSV más pequeño para que pueda importarlo a SQL sin problemas de memoria.
-```
+| Nivel | Prompt Utilizado / Propuesto |
+|:---|:---|
+| **🟢 Principiante** | "Tengo un archivo CSV gigante que no abre y quiero sacar unas columnas de países con terrorismo sin que se rompa mi PC." |
+| **🔵 Actual** | "Necesito un script de PowerShell que lea el archivo qog_std_ts_jan24.csv línea por línea, extraiga solo las columnas ucdp_type1, ucdp_type2, ucdp_type3, ucdp_type4, wdi_gdpcapcur, wdi_pop, ccode, cname y year, y guarde el resultado en un nuevo CSV." |
+| **🔴 Experto** | "Genera un script de PowerShell optimizado que use `System.IO.StreamReader` para procesar un CSV de 120MB. Implementa un pipeline que filtre por $ccodealp y seleccione columnas específicas mediante un objeto PSObject personalizado, exportando a CSV con codificación UTF8 para evitar pérdida de caracteres en nombres de países." |
 
-**Por que fue clave:** Este prompt me permitió saltarme la restricción de no tener un entorno de datos "profesional" instalado y crear mi propia tubería de limpieza de datos usando herramientas nativas de Windows.
+**Por que fue clave:** La evolución hacia el prompt experto demuestra que entiendo cómo gestionar los recursos del sistema (RAM y CPU) mediante el procesamiento de flujos de datos en lugar de la carga masiva en memoria.
 
 ---
 
@@ -62,14 +63,15 @@ Aprendí la diferencia práctica entre guardar datos en CSV y en Parquet. No sab
 
 ### Prompt clave del Bloque B
 
-**Herramienta:** ChatGPT (vía Copilot)
+**Herramienta:** ChatGPT / Github Copilot
 
-**El prompt que mas te ayudo en este bloque:**
-```
-Crea un script pipeline.py que use PySpark para: 1. Leer datos/qog/qog_std_ts_jan24.csv. 2. Filtrar ccodealp para ['ESP', 'FRA', 'TUR', 'AFG', 'RUS'] y años entre 2000 y 2023. 3. Crear una columna mil_exp_capita multiplicando wdi_expmil/100 por wdi_gdpcapcur. 4. Guardar el resultado en un archivo Parquet llamado qog_yihadismo_filtered.parquet.
-```
+| Nivel | Prompt Utilizado / Propuesto |
+|:---|:---|
+| **🟢 Principiante** | "Hazme un código de Spark para filtrar el CSV del QoG por años y países y guárdalo en Parquet." |
+| **🔵 Actual** | "Crea un script pipeline.py que use PySpark para: 1. Leer qog_std_ts_jan24.csv. 2. Filtrar ccodealp para ['ESP', 'FRA', 'TUR', 'AFG', 'RUS'] y años entre 2000 y 2023. 3. Crear mil_exp_capita. 4. Guardar en Parquet." |
+| **🔴 Experto** | "Escribe un Pipeline ETL en PySpark que implemente `inferSchema=False` con un StructType definido para optimizar el JOB. Realiza una limpieza de valores nulos en el campo militar mediante `coalesce` y genera una variable derivada tipada como DoubleType. Configura el nivel de particionamiento a 5 antes de escribir en Parquet." |
 
-**Por que fue clave:** Me dio la estructura base optimizada de Spark que luego pude ajustar para manejar los errores de tipos de datos y nulos.
+**Por que fue clave:** Pasar de un prompt genérico a uno con especificaciones técnicas de paralelismo y tipado de datos permite que Spark funcione mucho más rápido y sin errores de ejecución.
 
 ---
 
@@ -94,9 +96,10 @@ Aprendí a interpretar datos sociales y políticos comparándolos. Fue revelador
 
 **Herramienta:** Claude
 
-**El prompt que mas te ayudo en este bloque:**
-```
-Tengo un DataFrame con columnas 'ccodealp', 'year', 'wdi_expmil' y 'vdem_libdem'. Ayúdame a escribir un script en Python con matplotlib que genere dos gráficos: uno con la evolución del gasto militar y otro con la de democracia liberal, usando un bucle para que cada país tenga su propia línea de color y una leyenda clara.
-```
+| Nivel | Prompt Utilizado / Propuesto |
+|:---|:---|
+| **🟢 Principiante** | "Quiero hacer un dibujo con líneas de colores para mostrar los gráficos del gasto militar." |
+| **🔵 Actual** | "Ayúdame a escribir un script con matplotlib que genere dos gráficos: uno con el gasto militar y otro con la democracia liberal, usando un bucle para que cada país tenga su propia línea y leyenda." |
+| **🔴 Experto** | "Desarrolla una función modular en Matplotlib que reciba un DataFrame y genere una grilla de subplots comparativos. Usa un diccionario de colores estático por 'ccodealp', implementa un suavizado opcional de líneas (rolling mean) y asegura que el eje X esté sincronizado entre ambos gráficos para facilitar la comparación temporal." |
 
-**Por que fue clave:** Este prompt me ayudó a automatizar la creación de visualizaciones para múltiples países sin tener que repetir el código de `plt.plot()` cinco veces, lo que hizo el script `analysis.py` mucho más limpio.
+**Por que fue clave:** La modularidad solicitada en el nivel experto permite que el análisis sea reproducible y estéticamente profesional, facilitando la detección de patrones visuales complejos.
