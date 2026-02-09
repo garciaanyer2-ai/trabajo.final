@@ -60,7 +60,7 @@ def generate_visualizations():
     os.makedirs("datos", exist_ok=True)
     plot1_path = "datos/grafico1_militar.png"
     plt.savefig(plot1_path, dpi=300, bbox_inches='tight')
-    print(f"✅ Gráfico 1 guardado en {plot1_path}")
+    print(f"Grafico 1 guardado en {plot1_path}")
 
     # 3. Gráfico 2: Evolución de la Democracia Liberal (V-Dem)
     print("Generando Gráfico 2: Índice de Democracia...")
@@ -77,10 +77,10 @@ def generate_visualizations():
     
     plot2_path = "datos/grafico2_democracia.png"
     plt.savefig(plot2_path, dpi=300, bbox_inches='tight')
-    print(f"✅ Gráfico 2 guardado en {plot2_path}")
+    print(f"Grafico 2 guardado en {plot2_path}")
 
 if __name__ == "__main__":
     try:
         generate_visualizations()
     except Exception as e:
-        print(f"❌ Error durante la generación de gráficos: {e}")
+        print(f"Error durante la generacion de graficos: {e}")

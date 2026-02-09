@@ -12,10 +12,10 @@ def main() -> None:
 
     csv_path = ensure_downloaded(QOG_URL, TARGET_PATH, min_size_mb=10)
 
-    print("\n✅ Descarga OK")
+    print("\nDescarga OK")
     print(f"Archivo guardado en: {csv_path}")
     
-    print("\n⌛ Verificando dimensiones...")
+    print("\nVerificando dimensiones...")
     try:
         df = pd.read_csv(csv_path)
         rows, cols = df.shape
