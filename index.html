@@ -10,7 +10,20 @@
 
 <body>
     <canvas id="particles-canvas"></canvas>
-    <div class="container">
+
+    <!-- Splash Screen / Bienvenida Animada -->
+    <div id="welcome-overlay" class="welcome-overlay">
+        <div class="welcome-card">
+            <div class="profile-frame">
+                <img src="img/perfil.jpg" alt="Anyerlin Ravelo">
+            </div>
+            <h2>Bienvenido Analista</h2>
+            <div id="welcome-text" class="typed-text"></div>
+            <button class="access-btn" onclick="closeWelcome()">Iniciar sesión en el sistema</button>
+        </div>
+    </div>
+
+    <div class="container fade-content" id="main-container">
         <header>
             <h1>Intelligence Report</h1>
             <p>Análisis de Gasto Militar y Resiliencia Democrática ante el Yihadismo</p>
@@ -47,6 +60,9 @@
             <p>&copy; 2026 Anyerlin Ravelo - Maestría en Ciberseguridad y Operaciones</p>
         </footer>
     </div>
+
+    <!-- Sonido de inicio opcional (comentado) -->
+    <!-- <audio id="startup-sound" src="path/to/sound.mp3"></audio> -->
 
     <!-- Librerías para renderizar Markdown y Charts -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>

@@ -31,6 +31,125 @@ body {
         radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 40%),
         radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 40%);
     min-height: 100vh;
+    overflow-y: auto;
+}
+
+/* Splash Screen Overlay */
+.welcome-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, #0f172a 0%, #08090d 100%);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 1s ease, visibility 1s;
+}
+
+.welcome-overlay.hide {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.welcome-card {
+    text-align: center;
+    animation: zoomInReveal 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    max-width: 500px;
+    padding: 40px;
+}
+
+.profile-frame {
+    width: 180px;
+    height: 180px;
+    margin: 0 auto 30px;
+    border-radius: 50%;
+    padding: 5px;
+    background: linear-gradient(45deg, var(--accent-color), #f43f5e);
+    box-shadow: 0 0 30px var(--accent-glow);
+    animation: pulseGlow 3s infinite;
+}
+
+.profile-frame img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #08090d;
+}
+
+.welcome-card h2 {
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+    color: white;
+}
+
+.typed-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.1rem;
+    color: var(--accent-color);
+    min-height: 60px;
+    margin-bottom: 30px;
+}
+
+.access-btn {
+    background: transparent;
+    border: 1px solid var(--accent-color);
+    color: var(--accent-color);
+    padding: 15px 40px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.access-btn:hover {
+    background: var(--accent-color);
+    color: #08090d;
+    box-shadow: 0 0 20px var(--accent-glow);
+}
+
+.container.fade-content {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s ease, transform 1s ease;
+}
+
+.container.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@keyframes zoomInReveal {
+    from {
+        opacity: 0;
+        transform: scale(0.8) translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes pulseGlow {
+    0% {
+        box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    50% {
+        box-shadow: 0 0 40px var(--accent-glow);
+    }
+
+    100% {
+        box-shadow: 0 0 20px var(--accent-glow);
+    }
 }
 
 #particles-canvas {

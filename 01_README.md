@@ -1,75 +1,51 @@
 # 📡 Informe de Inteligencia: Gasto Militar y Resiliencia Democrática ante el Yihadismo
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/garciaanyer2-ai/trabajo.final?color=blue&label=Estado&style=for-the-badge)
-![Focus](https://img.shields.io/badge/Enfoque-Geopolítica%20%26%20Seguridad-cyan?style=for-the-badge)
-![Tech Stack](https://img.shields.io/badge/Stack-Spark%20%7C%20Postgres%20%7C%20Python-red?style=for-the-badge)
+<p align="center">
+  <img src="img/perfil.jpg" width="300" style="border-radius: 50%; border: 4px solid #06b6d4; box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);">
+</p>
 
-**🚀 [ACCEDER AL DASHBOARD OPERATIVO (LIVE)](https://garciaanyer2-ai.github.io/trabajo.final/)**
+## 👤 Perfil del Analista
+- **Nombre:** Anyerlin Ravelo
+- **Carrera:** Estudiante de Postgrado
+- **Nacionalidad:** Venezolana
+- **Especialidad:** Análisis de Datos en Ciberseguridad y Geopolítica
+
+### 🔗 Contacto Operativo
+[![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/cutgore__art?igsh=YWV2ZmQwdWc0ZThv&utm_source=qr)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/anyer-garcia-2b88b8392/)
 
 ---
 
-## 📑 Resumen Ejecutivo
-Este informe analiza la intersección entre el esfuerzo económico en defensa y la salud de las instituciones liberales en cinco estados bajo la presión asimétrica del fenómeno yihadista global. Se utiliza procesamiento distribuido para identificar patrones de resiliencia y erosión democrática en el periodo 2000-2023.
+## 📑 Resumen del Proyecto: Big Data & Geopolítica
+Este trabajo representa la culminación del módulo de procesamiento de datos masivos. Se basa en una arquitectura de **Contenedores Docker** y **Apache Spark** para analizar cómo el fenómeno del yihadismo impacta en el equilibrio entre el gasto de defensa y las libertades civiles.
+
+### 🛠️ Capacidades Técnicas Desplegadas:
+1. **Infraestructura elástica**: Cluster Spark (Master/Worker) y base de datos relacional PostgreSQL 15.
+2. **Pipeline ETL Robusto**: Procesamiento de datasets de +120MB (QoG Time-Series) mediante PySpark con tipado estricto y limpieza de señales.
+3. **Análisis Longitudinal**: Estudio de tendencias 2000-2023 para 5 naciones clave (España, Francia, Turquía, Afganistán y Rusia).
+4. **Visualización de Alto Impacto**: Dashboard interactivo con Chart.js y análisis comparativo de indicadores V-Dem.
 
 ---
 
 ## ⚡ Estructura de Inteligencia de Datos
 
-| Fase | Documento | Misión Táctica |
-|:---:|---|---|
-| **I** | `01_README.md` | Definición de objetivos, activos (países) y variables. |
-| **II** | `02_INFRAESTRUCTURA.md` | Despliegue del entorno contenedorizado (Docker). |
-| **III** | `pipeline.py` | ETL distribuido y limpieza de señales con Spark. |
-| **IV** | `03_RESULTADOS.md` | Interpretación visual y hallazgos estratégicos. |
-| **V** | `04_REFLEXION_IA.md` | Documentación del proceso de aprendizaje y prompting. |
-| **VI** | `05_RESPUESTAS.md` | Validación de conceptos técnicos. |
-
----
-
-## 🔍 Pregunta de Investigación (Evolución)
-
-| Nivel | Formulación |
-|:---|:---|
-| **🟢 Principiante** | ¿Cómo les va con el dinero de las armas y la democracia a los países con terrorismo? |
-| **🔵 Actual** | ¿Cómo ha evolucionado la relación entre el gasto militar y la calidad democrática en países clave afectados por el yihadismo (2000-2023)? |
-| **🔴 Experto** | Estudio econométrico sobre la correlación entre la intensidad del gasto militar (GPD_SHARE) y el deterioro de los índices de poliarquía (V-Dem) bajo presión asimétrica yihadista. |
-
----
-
-## 🌍 Teatro de Operaciones (Países Seleccionados)
-
-- **🛡️ España (ESP)**: Referente de resiliencia democrática en el flanco sur europeo.
-- **🇫🇷 Francia (FRA)**: Potencia con alta exposición y respuesta militar transnacional.
-- **🇹🇷 Turquía (TUR)**: Eje estratégico Euro-Asiático en proceso de transición política.
-- **🇦🇫 Afganistán (AFG)**: Análisis de colapso institucional y conflicto prolongado.
-- **🇷🇺 Rusia (RUS)**: Actor clave con tendencia hacia la centralización del poder y gasto militar expansivo.
-
----
-
-## 🏗️ Arquitectura del Sistema
-
-```mermaid
-graph LR
-    A[(QoG Data CSV)] -->|StreamReader| B(PowerShell Prep)
-    B -->|CSV Filtered| C[Spark Cluster]
-    C -->|PySpark ETL| D{PostgreSQL}
-    D -->|Query| E[Python Analysis]
-    E -->|Visuals| F[Interactive Dashboard]
-```
+| Fase | Misión Táctica |
+|:---:|---|
+| **I** | `01_README.md` (Perfil y Objetivos) |
+| **II** | `02_INFRAESTRUCTURA.md` (Docker & Spark) |
+| **III** | `pipeline.py` (ETL y Spark Jobs) |
+| **IV** | `03_RESULTADOS.md` (Exploración Visual) |
+| **V** | `04_REFLEXION_IA.md` (Prompt Engineering) |
+| **VI** | `05_RESPUESTAS.md` (Validación Teórica) |
 
 ---
 
 ## 🚀 Despliegue Táctico (Quick Start)
 
 ```bash
-# 1. Levantar contenedores
 docker-compose up -d
-
-# 2. Ejecutar inteligencia (ETL)
 python download_qog.py
 docker exec tf_spark_master /opt/spark/bin/spark-submit --master spark://spark-master:7077 /opt/spark/trabajo_final/pipeline.py
-
-# 3. Generar visualizaciones
 python analysis.py
 ```
 

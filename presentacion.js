@@ -232,7 +232,28 @@ document.addEventListener('DOMContentLoaded', () => {
     switchTab('01_README.md', document.querySelector('.tab-btn'));
     initParticles();
     initTilt();
+    startWelcomeSequence();
 });
+
+function startWelcomeSequence() {
+    const text = "Anyerlin Ravelo: Informe de Inteligencia. Sistema de monitoreo estratégico de Yihadismo y Gasto Militar. Acceso autorizado...";
+    const container = document.getElementById('welcome-text');
+    let i = 0;
+
+    function type() {
+        if (i < text.length) {
+            container.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(type, 30);
+        }
+    }
+    type();
+}
+
+function closeWelcome() {
+    document.getElementById('welcome-overlay').classList.add('hide');
+    document.getElementById('main-container').classList.add('show');
+}
 
 function initParticles() {
     const canvas = document.getElementById('particles-canvas');
