@@ -255,6 +255,64 @@ function closeWelcome() {
     document.getElementById('main-container').classList.add('show');
 }
 
+/**
+ * Exportación a PDF de Reporte Completo (Consolidado)
+ */
+async function exportToPDF() {
+    const btn = document.querySelector('.export-btn');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = "Generando Reporte...";
+    btn.disabled = true;
+
+    // Crear contenedor temporal para el reporte completo
+    const tempContainer = document.createElement('div');
+    tempContainer.className = 'markdown-body full-report-pdf';
+    tempContainer.style.padding = '40px';
+    tempContainer.style.background = '#08090d';
+    tempContainer.style.color = '#f1f5f9';
+    tempContainer.style.position = 'absolute';
+    tempContainer.style.left = '-9999px';
+    document.body.appendChild(tempContainer);
+
+    // 1. Añadir Portada / Info Personal
+    const profile = document.querySelector('.welcome-card').cloneNode(true);
+    const accessBtn = profile.querySelector('.access-btn');
+    if (accessBtn) accessBtn.remove();
+    tempContainer.appendChild(profile);
+    tempContainer.innerHTML += '<div class="page-break" style="page-break-after: always;"></div>';
+
+    // 2. Recorrer todos los contenidos de las pestañas
+    for (const [key, content] of Object.entries(projectContent)) {
+        const sectionTitle = key.replace(/_/g, ' ').replace('.md', '').toUpperCase();
+        tempContainer.innerHTML += `<h1 style="color:var(--accent-color); margin-top:40px; border-bottom: 2px solid var(--accent-color); padding-bottom: 10px;">${sectionTitle}</h1>`;
+
+        if (key === 'dashboard') {
+            tempContainer.innerHTML += `<div class="dashboard-preview">${content}</div>`;
+        } else {
+            tempContainer.innerHTML += marked.parse(content);
+        }
+        tempContainer.innerHTML += '<div class="page-break" style="page-break-after: always;"></div>';
+    }
+
+    const opt = {
+        margin: [10, 10],
+        filename: 'Reporte_Completo_Anyerlin_Ravelo.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, backgroundColor: '#08090d' },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    try {
+        await html2pdf().from(tempContainer).set(opt).save();
+    } catch (e) {
+        console.error("Error al exportar PDF:", e);
+    } finally {
+        document.body.removeChild(tempContainer);
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    }
+}
+
 function initParticles() {
     const canvas = document.getElementById('particles-canvas');
     const ctx = canvas.getContext('2d');
