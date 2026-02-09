@@ -1,18 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
-    --bg-color: #08090d;
-    /* Fondo más profundo */
-    --accent-color: #06b6d4;
-    /* Cian táctico */
-    --accent-glow: rgba(6, 182, 212, 0.4);
-    --glass-bg: rgba(15, 23, 42, 0.6);
-    --glass-border: rgba(6, 182, 212, 0.15);
-    --text-primary: #f1f5f9;
+    --bg-color: #030407;
+    --accent-color: #ff6b00;
+    /* Naranja Alerta High-Contrast */
+    --accent-glow: rgba(255, 107, 0, 0.4);
+    --secondary-accent: #00f2ff;
+    /* Cian Neon */
+    --secondary-glow: rgba(0, 242, 255, 0.3);
+    --glass-bg: rgba(6, 8, 15, 0.85);
+    --glass-border: rgba(255, 107, 0, 0.2);
+    --text-primary: #ffffff;
     --text-secondary: #94a3b8;
-    --card-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-    --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    --alert-color: #f43f5e;
+    --danger-color: #ff003c;
+    --card-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 * {
@@ -27,11 +29,40 @@ body {
     font-family: 'Outfit', sans-serif;
     line-height: 1.6;
     overflow-x: hidden;
-    background-image:
-        radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 40%),
-        radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 40%);
     min-height: 100vh;
-    overflow-y: auto;
+    position: relative;
+}
+
+/* Efecto de Rejilla Táctica de Fondo */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        linear-gradient(rgba(255, 107, 0, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 107, 0, 0.03) 1px, transparent 1px);
+    background-size: 30px 30px;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Scanlines Effect */
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
+        linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+    background-size: 100% 3px, 3px 100%;
+    z-index: 10000;
+    pointer-events: none;
+    opacity: 0.3;
 }
 
 /* Splash Screen Overlay */
@@ -41,12 +72,13 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at center, #0f172a 0%, #08090d 100%);
+    background: radial-gradient(circle at center, #0a0b14 0%, var(--bg-color) 100%);
     z-index: 9999;
     display: flex;
     justify-content: center;
     align-items: center;
     transition: opacity 1s ease, visibility 1s;
+    backdrop-filter: blur(10px);
 }
 
 .welcome-overlay.hide {
@@ -66,10 +98,29 @@ body {
     height: 180px;
     margin: 0 auto 30px;
     border-radius: 50%;
-    padding: 5px;
-    background: linear-gradient(45deg, var(--accent-color), #f43f5e);
-    box-shadow: 0 0 30px var(--accent-glow);
-    animation: pulseGlow 3s infinite;
+    padding: 6px;
+    background: linear-gradient(45deg, var(--accent-color), var(--danger-color));
+    box-shadow: 0 0 40px var(--accent-glow);
+    animation: alertPulse 2s infinite ease-in-out;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+@keyframes alertPulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    50% {
+        transform: scale(1.02);
+        box-shadow: 0 0 50px var(--accent-glow);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 20px var(--accent-glow);
+    }
 }
 
 .profile-frame img {
@@ -96,23 +147,24 @@ body {
 }
 
 .access-btn {
-    background: transparent;
-    border: 1px solid var(--accent-color);
-    color: var(--accent-color);
-    padding: 15px 40px;
-    font-size: 1rem;
-    font-weight: 600;
+    background: var(--accent-color);
+    border: none;
+    color: #000;
+    padding: 16px 45px;
+    font-size: 1.1rem;
+    font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 2px;
-    border-radius: 4px;
+    letter-spacing: 3px;
+    border-radius: 2px;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: var(--transition);
+    box-shadow: 0 0 20px var(--accent-glow);
 }
 
 .access-btn:hover {
-    background: var(--accent-color);
-    color: #08090d;
-    box-shadow: 0 0 20px var(--accent-glow);
+    transform: translateY(-3px) scale(1.05);
+    background: #fff;
+    box-shadow: 0 0 40px var(--accent-glow);
 }
 
 .container.fade-content {
@@ -204,33 +256,31 @@ header p {
 }
 
 .tab-btn {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     color: var(--text-secondary);
-    padding: 12px 24px;
-    border-radius: 50px;
+    padding: 10px 22px;
+    border-radius: 4px;
     cursor: pointer;
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 500;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 600;
     transition: var(--transition);
-    backdrop-filter: blur(10px);
+    border-left: 3px solid transparent;
 }
 
 .tab-btn:hover {
-    background: rgba(255, 255, 255, 0.08);
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    background: rgba(255, 107, 0, 0.1);
+    color: var(--accent-color);
+    border-left-color: var(--accent-color);
 }
 
 .tab-btn.active {
-    background: var(--accent-color);
-    color: #08090d;
-    /* Contraste táctico */
-    border-color: var(--accent-color);
-    box-shadow: 0 0 25px var(--accent-glow);
-    font-weight: 800;
+    background: rgba(255, 107, 0, 0.15);
+    color: var(--accent-color);
+    border: 1px solid var(--accent-color);
+    border-left: 4px solid var(--accent-color);
+    box-shadow: 0 0 20px var(--accent-glow);
 }
 
 .export-btn {
@@ -545,12 +595,10 @@ footer {
 /* Print Styles */
 @media print {
     body {
-        background-color: var(--bg-color) !important;
-        -webkit-print-color-adjust: exact !important;
-        -webkit-print-color-adjust: exact !important;
+        background-color: white !important;
+        color: black !important;
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
-        color: var(--text-primary) !important;
     }
 
     .container {
@@ -565,12 +613,13 @@ footer {
     }
 
     .presentation-content {
-        background: var(--glass-bg) !important;
-        border: 1px solid var(--glass-border) !important;
+        background: white !important;
+        border: 1px solid #ddd !important;
         box-shadow: none !important;
         padding: 40px !important;
         backdrop-filter: none !important;
         -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
     }
 
     .markdown-body h1 {
