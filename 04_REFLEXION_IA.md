@@ -103,3 +103,33 @@ Aprendí a interpretar datos sociales y políticos comparándolos. Fue revelador
 | **🔴 Experto** | "Desarrolla una función modular en Matplotlib que reciba un DataFrame y genere una grilla de subplots comparativos. Usa un diccionario de colores estático por 'ccodealp', implementa un suavizado opcional de líneas (rolling mean) y asegura que el eje X esté sincronizado entre ambos gráficos para facilitar la comparación temporal." |
 
 **Por que fue clave:** La modularidad solicitada en el nivel experto permite que el análisis sea reproducible y estéticamente profesional, facilitando la detección de patrones visuales complejos.
+---
+ 
+ ## Bloque D: Validacion Econometrica (Nivel Maestro)
+ 
+ ### Momento 1 - Arranque
+ **Que fue lo primero que le pediste a la IA o buscaste en internet?**
+ 
+ Decidí llevar el proyecto al nivel de una investigación científica real. Le pregunté a la IA: "Vamos a hacer el test de Hausman a mi trabajo, ¿cuánto porcentaje tiene mi trabajo de cada modelo y cuál me recomiendas colocar en base a mi proyecto?". Quería validar si mi análisis de países era estadísticamente robusto usando Efectos Fijos o Aleatorios.
+ 
+ ### Momento 2 - Error
+ **Que fallo y como lo resolviste?**
+ 
+ Hubo un error de compatibilidad muy complejo entre las librerías `linearmodels` y `pandas 3.0`. El código fallaba con un `ValueError: Length mismatch`. La IA me ayudó a resolverlo de dos formas: primero intentando degradar la versión de Pandas y finalmente re-escribiendo el script usando `statsmodels` y cálculos manuales para asegurar que el resultado fuera exacto y no dependiera de librerías inestables.
+ 
+ ### Momento 3 - Aprendizaje
+ **Que aprendiste que NO sabias antes de empezar este bloque?**
+ 
+ Aprendí qué es el Test de Hausman y por qué es crucial en política comparada. Entendí que el **p-valor (0.71)** nos da la probabilidad de que RE sea consistente, pero que la decisión final también depende del contexto. Aprendí que en geopolítica, los **Efectos Fijos (FE)** suelen ser mejores porque capturan la historia única de cada país, algo que un modelo aleatorio ignoraría.
+ 
+ ### Prompt clave del Bloque D
+ 
+ **Herramienta:** Antigravity AI
+ 
+ | Nivel | Prompt Utilizado |
+ |:---|:---|
+ | **🚀 Nivel Maestro** | "Vamos a hacer el test a mi trabajo de test de hausman, cuanto porcentaje tiene mi trabajo de cada modelo y cual me recomiendas colocar en base a mi proyecto." |
+ 
+ **Respuesta de la IA (Evidencia):** "Se ha aplicado el Test de Hausman (p=0.71). Aunque RE es consistente, se opta por un análisis de Efectos Fijos (FE) para controlar por la heterogeneidad estructural no observada de los estados en conflicto (Rusia, España, Afganistán...)."
+ 
+ **Por que fue clave:** Este bloque demuestra mi capacidad para realizar validación científica de mis hallazgos, no solo descriptiva. Es la diferencia entre un análisis básico y un informe de inteligencia profesional.
