@@ -16,14 +16,14 @@ const projectContent = {
 
 ## Orden de trabajo
 
-| Orden | Archivo | Que haces |
+| Orden | Fase Operativa | Objetivo Estratégico |
 |-------|---------|-----------|
-| **1** | \`01_README.md\` | Defines tu pregunta, paises y variables |
-| **2** | \`02_INFRAESTRUCTURA.md\` | Construyes y explicas tu docker-compose.yml |
-| **3** | \`pipeline.py\` | Escribes tu ETL + analisis con Spark |
-| **4** | \`03_RESULTADOS.md\` | Presentas graficos e interpretas resultados |
-| **5** | \`04_REFLEXION_IA.md\` | Documentas tu proceso y pegas tus prompts |
-| **6** | \`05_RESPUESTAS.md\` | Respondes 4 preguntas de comprension |
+| **I** | \`01_README.md\` | Definición de Inteligencia y Activos |
+| **II** | \`02_INFRAESTRUCTURA.md\` | Despliegue del Entorno Contenedorizado |
+| **III** | \`pipeline.py\` | ETL Distribuido y Limpieza de Señales |
+| **IV** | \`03_RESULTADOS.md\` | Visualización y Explotación Táctica |
+| **V** | \`04_REFLEXION_IA.md\` | Post-Mortem y Optimización de Prompting |
+| **VI** | \`05_RESPUESTAS.md\` | Validación de Capacidades Técnicas |
 
 ---
 
@@ -111,35 +111,35 @@ La relación entre gasto militar y democracia es inversamente proporcional en re
 
     'dashboard': `
         <div class="dashboard-title">
-            <h1>Panel de Control Analítico</h1>
-            <p>Visualización interactiva de indicadores QoG (2000-2023)</p>
+            <h1 style="color:var(--accent-color)">🛰️ Panel de Vigilancia Geopolítica</h1>
+            <p>Monitoreo de indicadores QoG y señales de inestabilidad (2000-2023)</p>
         </div>
 
         <div class="kpi-row">
             <div class="kpi-card">
-                <h4>Países Analizados</h4>
+                <h4>Activos en Observación</h4>
                 <div class="value">05</div>
-                <div class="trend up">Serie Temporal Completa</div>
+                <div class="trend up">Serie Completa Sincronizada</div>
             </div>
             <div class="kpi-card">
-                <h4>Máx Gasto Militar</h4>
+                <h4>Esfuerzo Crítico (MIL)</h4>
                 <div class="value">11.5%</div>
-                <div class="trend up">Afganistán (2020)</div>
+                <div class="trend up" style="color:var(--alert-color)">ALERTA: Afganistán (2020)</div>
             </div>
             <div class="kpi-card">
-                <h4>Caída Democrática</h4>
+                <h4>Erosión Institucional</h4>
                 <div class="value">-78%</div>
-                <div class="trend down">Turquía / Rusia</div>
+                <div class="trend down">Tendencia Autocrática: Rusia/Turquía</div>
             </div>
         </div>
 
         <div class="dashboard-grid">
             <div class="chart-card">
-                <h4>Tendencia: Gasto Militar (% PIB)</h4>
+                <h4>Vector de Gasto Militar (% del PIB)</h4>
                 <div style="height: 300px;"><canvas id="milChart"></canvas></div>
             </div>
             <div class="chart-card">
-                <h4>Tendencia: Índice Democracia</h4>
+                <h4>Índice de Resiliencia Institucional (V-Dem)</h4>
                 <div style="height: 300px;"><canvas id="demChart"></canvas></div>
             </div>
         </div>

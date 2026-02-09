@@ -1,96 +1,79 @@
-# Trabajo Final: Gasto Militar y Calidad Democrática ante el Yihadismo
+# 📡 Informe de Inteligencia: Gasto Militar y Resiliencia Democrática ante el Yihadismo
 
-**🚀 [VER PRESENTACIÓN INTERACTIVA (LIVE)](https://garciaanyer2-ai.github.io/trabajo.final/)**
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/garciaanyer2-ai/trabajo.final?color=blue&label=Estado&style=for-the-badge)
+![Focus](https://img.shields.io/badge/Enfoque-Geopolítica%20%26%20Seguridad-cyan?style=for-the-badge)
+![Tech Stack](https://img.shields.io/badge/Stack-Spark%20%7C%20Postgres%20%7C%20Python-red?style=for-the-badge)
 
-**Alumno:** Anyerlin Ravelo
-**Fecha:** 08/02/2026
-
----
-
-## Orden de trabajo
-
-Completa los archivos en este orden. Cada numero indica la secuencia:
-
-| Orden | Archivo | Que haces |
-|-------|---------|-----------|
-| **1** | `01_README.md` (este archivo) | Defines tu pregunta, paises y variables |
-| **2** | `02_INFRAESTRUCTURA.md` | Construyes y explicas tu docker-compose.yml |
-| **3** | `pipeline.py` | Escribes tu ETL + analisis con Spark |
-| **4** | `03_RESULTADOS.md` | Presentas graficos e interpretas resultados |
-| **5** | `04_REFLEXION_IA.md` | Documentas tu proceso y pegas tus prompts |
-| **6** | `05_RESPUESTAS.md` | Respondes 4 preguntas de comprension |
-
-Los archivos `docker-compose.yml`, `requirements.txt` y `.gitignore` los
-completas conforme avanzas.
+**🚀 [ACCEDER AL DASHBOARD OPERATIVO (LIVE)](https://garciaanyer2-ai.github.io/trabajo.final/)**
 
 ---
 
-## Pregunta de investigacion
+## 📑 Resumen Ejecutivo
+Este informe analiza la intersección entre el esfuerzo económico en defensa y la salud de las instituciones liberales en cinco estados bajo la presión asimétrica del fenómeno yihadista global. Se utiliza procesamiento distribuido para identificar patrones de resiliencia y erosión democrática en el periodo 2000-2023.
 
-Presentamos la evolución de nuestra duda metódica, desde una inquietud general hasta una formulación técnica y estructurada:
+---
 
-| Nivel | Formulación de la Pregunta |
+## ⚡ Estructura de Inteligencia de Datos
+
+| Fase | Documento | Misión Táctica |
+|:---:|---|---|
+| **I** | `01_README.md` | Definición de objetivos, activos (países) y variables. |
+| **II** | `02_INFRAESTRUCTURA.md` | Despliegue del entorno contenedorizado (Docker). |
+| **III** | `pipeline.py` | ETL distribuido y limpieza de señales con Spark. |
+| **IV** | `03_RESULTADOS.md` | Interpretación visual y hallazgos estratégicos. |
+| **V** | `04_REFLEXION_IA.md` | Documentación del proceso de aprendizaje y prompting. |
+| **VI** | `05_RESPUESTAS.md` | Validación de conceptos técnicos. |
+
+---
+
+## 🔍 Pregunta de Investigación (Evolución)
+
+| Nivel | Formulación |
 |:---|:---|
-| **🟢 Principiante** | ¿Cómo les va con el dinero de las armas y la democracia a los países que tienen problemas con el terrorismo? |
-| **🔵 Actual** | ¿Cómo ha evolucionado la relación entre el gasto militar y la calidad democrática en países clave afectados por el fenómeno del yihadismo en Europa y Asia Central durante el periodo 2000-2023? |
-| **🔴 Experto** | Estudio econométrico longitudinal sobre la correlación entre la intensidad del gasto militar (GPD_SHARE) y el deterioro de los índices de poliarquía (V-Dem) en estados fronterizos bajo presión asimétrica yihadista: Un análisis comparativo de resiliencia institucional (2000-2023). |
+| **🟢 Principiante** | ¿Cómo les va con el dinero de las armas y la democracia a los países con terrorismo? |
+| **🔵 Actual** | ¿Cómo ha evolucionado la relación entre el gasto militar y la calidad democrática en países clave afectados por el yihadismo (2000-2023)? |
+| **🔴 Experto** | Estudio econométrico sobre la correlación entre la intensidad del gasto militar (GPD_SHARE) y el deterioro de los índices de poliarquía (V-Dem) bajo presión asimétrica yihadista. |
 
 ---
 
-## Paises seleccionados (5)
+## 🌍 Teatro de Operaciones (Países Seleccionados)
 
-| # | Pais | Codigo ISO | Por que lo elegiste |
-|---|------|------------|---------------------|
-| 1 | España | ESP | Referente europeo para comparar la resiliencia democrática frente al terrorismo. |
-| 2 | Francia | FRA | País europeo con alta exposición y respuesta militar al yihadismo global. |
-| 3 | Turquía | TUR | Puente estratégico entre regiones con un cambio drástico en su modelo político. |
-| 4 | Afganistán | AFG | Epicentro de conflicto yihadista prolongado y colapso de instituciones. |
-| 5 | Rusia | RUS | Actor clave en la seguridad de Asia Central con una tendencia autocrática marcada. |
-
-**IMPORTANTE:** No puedes usar los paises del ejemplo del profesor (KAZ, UZB, TKM, KGZ, TJK).
+- **🛡️ España (ESP)**: Referente de resiliencia democrática en el flanco sur europeo.
+- **🇫🇷 Francia (FRA)**: Potencia con alta exposición y respuesta militar transnacional.
+- **🇹🇷 Turquía (TUR)**: Eje estratégico Euro-Asiático en proceso de transición política.
+- **🇦🇫 Afganistán (AFG)**: Análisis de colapso institucional y conflicto prolongado.
+- **🇷🇺 Rusia (RUS)**: Actor clave con tendencia hacia la centralización del poder y gasto militar expansivo.
 
 ---
 
-## Variables seleccionadas (5 numericas)
+## 🏗️ Arquitectura del Sistema
 
-| # | Variable QoG | Que mide | Por que la elegiste |
-|---|-------------|----------|---------------------|
-| 1 | `p_polity2` | Puntuación Polity (Democracia vs Autocracia) | Para ver el espectro político general del país. |
-| 2 | `vdem_libdem` | Índice de Democracia Liberal | Para medir la salud de las libertades y derechos civiles. |
-| 3 | `wbgi_rle` | Estado de Derecho (Rule of Law) | Mide la confianza en las reglas sociales y cumplimiento de leyes. |
-| 4 | `wdi_expmil` | Gasto militar (% del PIB) | Indicador principal del esfuerzo económico en defensa y seguridad. |
-| 5 | `wdi_gdpcapcur` | PIB per cápita (USD actual) | Contexto económico para normalizar el gasto de seguridad. |
-
-**Tip:** Consulta el codebook de QoG para entender que mide cada variable:
-https://www.gu.se/en/quality-government/qog-data
-
----
-
-## Variable derivada
-
-He creado la variable **`mil_exp_capita`**, que representa el gasto militar anual por cada ciudadano. Se calcula mediante la fórmula: `(wdi_expmil / 100) * wdi_gdpcapcur`. Esto permite comparar el esfuerzo de seguridad de manera más justa entre países con economías de distinto tamaño.
-
----
-
-## Tipo de analisis elegido
-
-- [ ] Clustering (K-Means)
-- [x] Serie temporal (evolucion por pais)
-- [ ] Comparacion (antes/despues de un evento)
-
----
-
-## Como ejecutar mi pipeline
-
-```bash
-# Paso 1: Levantar infraestructura
-docker compose up -d
-
-# Paso 2: Verificar que todo funciona
-docker ps
-
-# Paso 3: Ejecutar pipeline
-python pipeline.py
+```mermaid
+graph LR
+    A[(QoG Data CSV)] -->|StreamReader| B(PowerShell Prep)
+    B -->|CSV Filtered| C[Spark Cluster]
+    C -->|PySpark ETL| D{PostgreSQL}
+    D -->|Query| E[Python Analysis]
+    E -->|Visuals| F[Interactive Dashboard]
 ```
 
-**Instrucción adicional:** Asegúrate de tener el dataset `qog_std_ts_jan24.csv` en la carpeta `datos/qog/` antes de ejecutar el pipeline. El script `analysis.py` puede ejecutarse posteriormente para regenerar las visualizaciones en la carpeta `capturas/`.
+---
+
+## 🚀 Despliegue Táctico (Quick Start)
+
+```bash
+# 1. Levantar contenedores
+docker-compose up -d
+
+# 2. Ejecutar inteligencia (ETL)
+python download_qog.py
+docker exec tf_spark_master /opt/spark/bin/spark-submit --master spark://spark-master:7077 /opt/spark/trabajo_final/pipeline.py
+
+# 3. Generar visualizaciones
+python analysis.py
+```
+
+---
+**Analista:** Anyerlin Ravelo  
+**Unidad:** Maestría en Ciberseguridad y Operaciones  
+**Fecha:** 09/02/2026
