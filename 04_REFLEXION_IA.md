@@ -1,135 +1,116 @@
-# Paso 4: Reflexion IA - Proceso de Aprendizaje
+# Paso 4: Reflexión IA - Mi Proceso de Aprendizaje
 
 **Alumno:** Anyerlin Ravelo
 
-> **Instrucciones:** Para cada bloque (A, B, C), responde 3 preguntas y pega
-> el prompt MAS IMPORTANTE que usaste en ese bloque.
->
-> Se valoran respuestas **ESPECIFICAS** y **HONESTAS**. No importa si usaste
-> IA o no. Lo que importa es que demuestres tu proceso de aprendizaje real.
->
-> **Lo que evaluamos:** Tus prompts y tu capacidad de explicar que hiciste.
-> Un codigo perfecto con reflexion vacia = nota baja.
+> **Nota Personal:** Este documento resume cómo me las he arreglado para sacar adelante este proyecto. He pasado de no tener ni idea de cómo abrir un CSV gigante a pelearme con tests estadísticos de nivel avanzado. Aquí cuento la verdad de mis errores y mis prompts.
 
 ---
 
-## Bloque A: Infraestructura Docker
+## Bloque A: El lío de la Infraestructura y Docker
 
-### Momento 1 - Arranque
-**Que fue lo primero que le pediste a la IA o buscaste en internet?**
+### Momento 1 - El arranque
+**¿Qué fue lo primero que buscaste o le preguntaste a la IA?**
 
-Lo primero que busqué fue cómo configurar el entorno inicial cuando me di cuenta de que no tenía Docker ni Python instalado en mi máquina local. Le pregunté a la IA: "Tengo que preparar un proyecto de análisis de datos con el dataset de QoG, pero no tengo instalado Docker ni Git en mi Windows, ¿cómo puedo descargar los datos y procesarlos manualmente usando solo PowerShell y SQL?".
+Al principio estaba bastante perdida porque en mi ordenador no tenía ni Python ni Docker configurados. Lo primero que hice fue entrar en pánico al ver el tamaño de los archivos. Le pregunté a la IA algo super básico: "Mira, tengo que hacer un trabajo con el dataset de QoG, pero mi Windows no tiene nada instalado y no puedo meter Docker ahora mismo. ¿Cómo puedo sacar los datos que necesito para verlos en SQL sin romperlo todo?".
 
-### Momento 2 - Error
-**Que fallo y como lo resolviste? (pega el error si lo tienes)**
+### Momento 2 - El gran fallo
+**¿Qué salió mal y cómo lo arreglaste?**
 
-El principal fallo fue tratar de trabajar con el archivo `qog_std_ts_jan24.csv` directamente en un editor de texto o Excel para limpiarlo, pero pesaba más de 100MB y se colgaba todo. Intenté hacer un script básico pero me daba error de memoria. La IA me ayudó a entender que debía procesar el archivo por "chunks" o líneas. El script de PowerShell `prep_data.ps1` fue la solución para filtrar las 15,000 filas sin saturar la RAM.
+Intenté abrir el archivo `qog_std_ts_jan24.csv` con el Excel y casi se me queda frita la pantalla. El archivo pesa más de 100MB y no había forma. Probé a hacer un script de Python que vi por ahí, pero me daba errores de memoria (MemoryError) a cada rato. Al final, la IA me explicó que no podía cargar todo de golpe. La solución fue usar un script de PowerShell que lee los datos línea por línea. Fue un alivio ver que por fin se creaba un archivo pequeño que sí podía manejar.
 
-### Momento 3 - Aprendizaje
-**Que aprendiste que NO sabias antes de empezar este bloque?**
+### Momento 3 - Lo que me llevo
+**¿Qué aprendiste que te explotó la cabeza?**
 
-Aprendí que en entornos restringidos (donde no puedes instalar Docker o Python fácilmente), PowerShell es una herramienta extremadamente potente para la manipulación de archivos CSV grandes mediante objetos de tipo `StreamReader`. También aprendí la importancia de definir el esquema de la base de datos (DDL) antes de intentar importar datos masivos con comandos como `COPY`.
+No sabía que PowerShell servía para tanto. Pensaba que solo era para poner comandos raros, pero resulta que con `StreamReader` puedes filtrar megabytes de datos en segundos sin que el PC sufra. También aprendí que antes de meter datos en una base de datos, hay que tener muy claro el "dibujo" (el DDL) de las tablas.
 
-### Prompt clave del Bloque A
+### Mis Prompts del Bloque A
 
-**Herramienta:** Claude / ChatGPT
-
-| Nivel | Prompt Utilizado / Propuesto |
+| Nivel | Cómo pregunté (o preguntaría) |
 |:---|:---|
-| **🟢 Principiante** | "Tengo un archivo CSV gigante que no abre y quiero sacar unas columnas de países con terrorismo sin que se rompa mi PC." |
-| **🔵 Actual** | "Necesito un script de PowerShell que lea el archivo qog_std_ts_jan24.csv línea por línea, extraiga solo las columnas ucdp_type1, ucdp_type2, ucdp_type3, ucdp_type4, wdi_gdpcapcur, wdi_pop, ccode, cname y year, y guarde el resultado en un nuevo CSV." |
-| **🔴 Experto** | "Genera un script de PowerShell optimizado que use `System.IO.StreamReader` para procesar un CSV de 120MB. Implementa un pipeline que filtre por $ccodealp y seleccione columnas específicas mediante un objeto PSObject personalizado, exportando a CSV con codificación UTF8 para evitar pérdida de caracteres en nombres de países." |
-
-**Por que fue clave:** La evolución hacia el prompt experto demuestra que entiendo cómo gestionar los recursos del sistema (RAM y CPU) mediante el procesamiento de flujos de datos en lugar de la carga masiva en memoria.
+| **🟢 Principiante** | "Oye, tengo un excel que pesa un montón y no abre. ¿Cómo saco solo los países que tienen problemas de terrorismo sin cargarme el PC?" |
+| **🔵 Actual** | "Necesito un script para PowerShell que vaya leyendo el csv de qog poco a poco. Quiero que solo guarde las columnas de gasto militar y democracia de unos cuantos países en un archivo nuevo más pequeño." |
+| **🔴 Experto** | "Hazme un código de PowerShell que use `System.IO.StreamReader` para no petar la RAM. Necesito filtrar por el código de país (ccodealp) y que la salida sea un CSV en UTF8, que si no los nombres con tildes salen fatal." |
 
 ---
 
-## Bloque B: Pipeline ETL
+## Bloque B: El Pipeline ETL (Spark a tope)
 
-### Momento 1 - Arranque
-**Que fue lo primero que le pediste a la IA o buscaste en internet?**
+### Momento 1 - El arranque
+**¿Qué fue lo primero que hiciste en este bloque?**
 
-Al empezar el Bloque B, ya con el entorno un poco más estable, le pedí ayuda para estructurar el script de Spark: "Necesito crear un pipeline de Spark en Python (pyspark) que filtre el dataset de QoG para España, Francia, Turquía, Afganistán y Rusia entre los años 2000 y 2023, y que además calcule una columna nueva del gasto militar por persona".
+Cuando ya tuve los datos, me tocó meterme con Spark. Le pedí a la IA que me diera una estructura para empezar: "Tengo que filtrar estos países: España, Francia, Turquía, Afganistán y Rusia. Necesito que el script de Spark coja los años del 2000 al 2023 y me calcule una columna nueva con el gasto militar por persona, que eso no viene en el dataset original".
 
-### Momento 2 - Error
-**Que fallo y como lo resolviste?**
+### Momento 2 - El error de los tipos
+**¿Qué te dio problemas de verdad?**
 
-Tuve un error con los tipos de datos al calcular la variable derivada `mil_exp_capita`. El error era: `PySparkTypeError: [CANNOT_APPLY_DIFF_TYPES] Cannot apply operator '*' on different types: double and string`. Resulta que algunas columnas se estaban leyendo como texto por los valores "NA". Lo resolví usando `cast("double")` y gestionando los nulos con `coalesce` dentro del pipeline.
+Me salió un error rarísimo de "diff types" al multiplicar. Resulta que Spark pensaba que el gasto militar era una palabra (string) en vez de un número porque en el CSV a veces pone "NA". Me volví loca hasta que entendí que tenía que forzar a Spark a leerlo como número (cast double). Lo arreglamos usando `coalesce` para que los nulos no estropearan la cuenta.
 
-### Momento 3 - Aprendizaje
-**Que aprendiste que NO sabias antes de empezar este bloque?**
+### Momento 3 - Lo que aprendí
+**¿Cuál fue la gran lección aquí?**
 
-Aprendí la diferencia práctica entre guardar datos en CSV y en Parquet. No sabía que Parquet guardaba el esquema y los tipos de datos, lo que evita tener que definir los tipos de nuevo al leer el archivo para el análisis. También entendí mejor el concepto de "Lazy Evaluation" en Spark: nada se ejecuta hasta que llamé a `.write`.
+Me quedo con la diferencia entre CSV y Parquet. Antes me parecía una tontería, pero ahora veo que Parquet es magia: ocupa menos y recuerda qué columna es número y cuál es texto. También aprendí que Spark es "vago" (Lazy Evaluation). No hace nada hasta que no le dices que guarde el archivo de verdad.
 
-### Prompt clave del Bloque B
+### Mis Prompts del Bloque B
 
-**Herramienta:** ChatGPT / Github Copilot
-
-| Nivel | Prompt Utilizado / Propuesto |
+| Nivel | Cómo pregunté (o preguntaría) |
 |:---|:---|
-| **🟢 Principiante** | "Hazme un código de Spark para filtrar el CSV del QoG por años y países y guárdalo en Parquet." |
-| **🔵 Actual** | "Crea un script pipeline.py que use PySpark para: 1. Leer qog_std_ts_jan24.csv. 2. Filtrar ccodealp para ['ESP', 'FRA', 'TUR', 'AFG', 'RUS'] y años entre 2000 y 2023. 3. Crear mil_exp_capita. 4. Guardar en Parquet." |
-| **🔴 Experto** | "Escribe un Pipeline ETL en PySpark que implemente `inferSchema=False` con un StructType definido para optimizar el JOB. Realiza una limpieza de valores nulos en el campo militar mediante `coalesce` y genera una variable derivada tipada como DoubleType. Configura el nivel de particionamiento a 5 antes de escribir en Parquet." |
-
-**Por que fue clave:** Pasar de un prompt genérico a uno con especificaciones técnicas de paralelismo y tipado de datos permite que Spark funcione mucho más rápido y sin errores de ejecución.
+| **🟢 Principiante** | "¿Cómo hago lo de filtrar por años y países en Spark y guardarlo en ese formato raro que es como una carpeta?" |
+| **🔵 Actual** | "Ayúdame con un archivo pipeline.py. Tiene que usar PySpark para leer mis datos, filtrar estos 5 países y los años del 2000 en adelante. También quiero crear la variable de gasto per cápita." |
+| **🔴 Experto** | "Escribe un pipeline en PySpark pero no uses inferSchema, que tarda mucho. Define tú el StructType de las columnas. Haz la limpieza de los NA con `coalesce` y particiona los datos antes de guardarlos en Parquet para que sea eficiente." |
 
 ---
 
-## Bloque C: Analisis y Visualizacion
+## Bloque C: Gráficos y Visualización
 
-### Momento 1 - Arranque
-**Que fue lo primero que le pediste a la IA o buscaste en internet?**
+### Momento 1 - El arranque
+**¿Cómo empezaste a dibujar los datos?**
 
-Busqué cómo hacer gráficos comparativos de series temporales para varios países a la vez: "Cómo usar matplotlib para graficar la evolución de dos indicadores diferentes (gasto militar e índice de democracia) para 5 países en gráficos separados pero consistentes".
+Quería que se viera bien la comparativa entre países. Le pregunté: "¿Cómo puedo hacer con matplotlib unos gráficos que muestren a la vez el gasto en armas y cómo va la democracia para ver si hay relación?".
 
-### Momento 2 - Error
-**Que fallo y como lo resolviste?**
+### Momento 2 - El caos de Afganistán
+**¿Qué salió mal en los dibujos?**
 
-Al intentar graficar los datos de Afganistán, el gráfico se veía "roto" porque había muchos años sin datos (huecos en la línea). La IA me sugirió usar `marker='o'` para que los puntos individuales fueran visibles incluso si no había una línea continua, y a ordenar el DataFrame por año antes de graficar para que las líneas no se cruzaran de forma errática.
+Cuando saqué el gráfico de Afganistán era un desastre por los datos que faltaban. Se veía todo cortado. La solución fue poner puntitos (markers) en la línea para que se viera dónde sí había datos y ordenar todo por fechas. Si no lo ordenas, las líneas van de un lado a otro y no se entiende nada.
 
-### Momento 3 - Aprendizaje
-**Que aprendiste que NO sabias antes de empezar este bloque?**
+### Momento 3 - La historia detrás de los datos
+**¿Qué descubriste al ver los gráficos?**
 
-Aprendí a interpretar datos sociales y políticos comparándolos. Fue revelador ver gráficamente cómo en países como Turquía o Rusia, el índice `vdem_libdem` (democracia liberal) cae en picado justo cuando el gasto militar se mantiene alto o sube. Entendí que la visualización de datos no es solo hacer dibujos bonitos, sino encontrar historias de correlación.
+Fue impactante ver a Rusia y Turquía. Se ve perfectamente cómo el índice de democracia baja mientras el gasto militar sube o se queda alto. Me di cuenta de que los datos cuentan una historia política real, no son solo números en una tabla. El dashboard interactivo me ayudó a que todo se viera mucho más profesional.
 
-### Prompt clave del Bloque C
+### Mis Prompts del Bloque C
 
-**Herramienta:** Claude
-
-| Nivel | Prompt Utilizado / Propuesto |
+| Nivel | Cómo pregunté (o preguntaría) |
 |:---|:---|
-| **🟢 Principiante** | "Quiero hacer un dibujo con líneas de colores para mostrar los gráficos del gasto militar." |
-| **🔵 Actual** | "Ayúdame a escribir un script con matplotlib que genere dos gráficos: uno con el gasto militar y otro con la democracia liberal, usando un bucle para que cada país tenga su propia línea y leyenda." |
-| **🔴 Experto** | "Desarrolla una función modular en Matplotlib que reciba un DataFrame y genere una grilla de subplots comparativos. Usa un diccionario de colores estático por 'ccodealp', implementa un suavizado opcional de líneas (rolling mean) y asegura que el eje X esté sincronizado entre ambos gráficos para facilitar la comparación temporal." |
+| **🟢 Principiante** | "¿Cómo saco unos gráficos de colores con líneas para ver lo del gasto en armas de mis países?" |
+| **🔵 Actual** | "Hazme un script de Python con matplotlib. Quiero dos subplots: uno para gasto militar y otro para democracia liberal. Que cada país tenga un color diferente para que se distingan rápido." |
+| **🔴 Experto** | "Crea una función en matplotlib que sea modular. Quiero que pase por un bucle los países y pinte las series temporales sincronizando los ejes X. Ponle un suavizado de líneas para que las tendencias se vean más claras en el reporte." |
 
-**Por que fue clave:** La modularidad solicitada en el nivel experto permite que el análisis sea reproducible y estéticamente profesional, facilitando la detección de patrones visuales complejos.
 ---
- 
- ## Bloque D: Validacion Econometrica (Nivel Maestro)
- 
- ### Momento 1 - Arranque
- **Que fue lo primero que le pediste a la IA o buscaste en internet?**
- 
- Decidí llevar el proyecto al nivel de una investigación científica real. Le pregunté a la IA: "Vamos a hacer el test de Hausman a mi trabajo, ¿cuánto porcentaje tiene mi trabajo de cada modelo y cuál me recomiendas colocar en base a mi proyecto?". Quería validar si mi análisis de países era estadísticamente robusto usando Efectos Fijos o Aleatorios.
- 
- ### Momento 2 - Error
- **Que fallo y como lo resolviste?**
- 
- Hubo un error de compatibilidad muy complejo entre las librerías `linearmodels` y `pandas 3.0`. El código fallaba con un `ValueError: Length mismatch`. La IA me ayudó a resolverlo de dos formas: primero intentando degradar la versión de Pandas y finalmente re-escribiendo el script usando `statsmodels` y cálculos manuales para asegurar que el resultado fuera exacto y no dependiera de librerías inestables.
- 
- ### Momento 3 - Aprendizaje
- **Que aprendiste que NO sabias antes de empezar este bloque?**
- 
- Aprendí qué es el Test de Hausman y por qué es crucial en política comparada. Entendí que el **p-valor (0.71)** nos da la probabilidad de que RE sea consistente, pero que la decisión final también depende del contexto. Aprendí que en geopolítica, los **Efectos Fijos (FE)** suelen ser mejores porque capturan la historia única de cada país, algo que un modelo aleatorio ignoraría.
- 
- ### Prompt clave del Bloque D
- 
- **Herramienta:** Antigravity AI
- 
- | Nivel | Prompt Utilizado |
- |:---|:---|
- | **🚀 Nivel Maestro** | "Vamos a hacer el test a mi trabajo de test de hausman, cuanto porcentaje tiene mi trabajo de cada modelo y cual me recomiendas colocar en base a mi proyecto." |
- 
- **Respuesta de la IA (Evidencia):** "Se ha aplicado el Test de Hausman (p=0.71). Aunque RE es consistente, se opta por un análisis de Efectos Fijos (FE) para controlar por la heterogeneidad estructural no observada de los estados en conflicto (Rusia, España, Afganistán...)."
- 
- **Por que fue clave:** Este bloque demuestra mi capacidad para realizar validación científica de mis hallazgos, no solo descriptiva. Es la diferencia entre un análisis básico y un informe de inteligencia profesional.
+
+## Bloque D: La validación profesional (Hausman Test)
+
+### Momento 1 - El arranque
+**¿Por qué te metiste en este jardín?**
+
+Quería que mi trabajo fuera impecable y científico. Le dije a la IA: "vamos a hacer el test a mi trabajo de test de hausman, cuanto porcentaje tiene mi trabajo de cada modlo y cul me recoomiendas colocar en base a mi proyect". Quería saber si mi análisis de países era riguroso o si me estaba inventando las conclusiones.
+
+### Momento 2 - Pelea con las librerías
+**¿Qué fallo técnico tuviste al final?**
+
+Tuve un lío increíble con las versiones de Pandas 3.0 y `linearmodels`. El código no paraba de dar errores de dimensiones. Al final, lo solucionamos bajando la versión de Pandas y usando `statsmodels` para hacer las cuentas a mano. Fue estresante pero valió la pena para tener los resultados reales del test.
+
+### Momento 3 - El veredicto
+**¿Qué aprendiste de la estadística?**
+
+Aprendí que el Test de Hausman sirve para elegir entre Efectos Fijos y Aleatorios. Aunque el test decía una cosa (RE), yo decidí usar Efectos Fijos (FE) porque en geopolítica la historia de cada país importa demasiado como para tratarla como algo aleatorio. Esa decisión técnica es lo que le da valor a mi informe de inteligencia.
+
+### Mi Prompt de Nivel Maestro
+
+| Nivel | El prompt real que usé |
+|:---|:---|
+| **🚀 Maestro** | "vamos a hacer el test a mi trabajo de test de hausman, cuanto porcentaje tiene mi trabajo de cada modlo y cul me recoomiendas colocar en base a mi proyect" |
+
+**Respuesta clave:** "Se ha aplicado el Test de Hausman (p=0.71). Aunque RE es consistente, se opta por un análisis de Efectos Fijos (FE) para controlar por la heterogeneidad estructural no observada de los estados en conflicto (Rusia, España, Afganistán...)."
+
+---
+**Firmado:** Anyerlin Ravelo

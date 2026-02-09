@@ -64,8 +64,3 @@ python analysis.py
 **Analista:** Anyerlin Ravelo  
 **Unidad:** Maestría en Ciberseguridad y Operaciones  
 **Fecha:** 09/02/2026
-
----
-**Analista:** Anyerlin Ravelo  
-**Unidad:** Maestría en Ciberseguridad y Operaciones  
-**Fecha:** 09/02/2026

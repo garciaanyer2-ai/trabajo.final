@@ -35,8 +35,7 @@
             <button class="tab-btn" onclick="switchTab('03_RESULTADOS.md', this)">03. Resultados</button>
             <button class="tab-btn" onclick="switchTab('dashboard', this)">🚀 Dashboard</button>
             <button class="tab-btn" onclick="switchTab('04_REFLEXION_IA.md', this)">04. Reflexión IA</button>
-            <button class="tab-btn" onclick="switchTab('05_RESPUESTAS.md', this)">05. Comprensión</button>
-            <button class="export-btn" onclick="window.print()">
+            <button class="export-btn" onclick="exportToPDF()">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
@@ -67,6 +66,7 @@
     <!-- Librerías para renderizar Markdown y Charts -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="presentacion.js"></script>
 </body>
 
