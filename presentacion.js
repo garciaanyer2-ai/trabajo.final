@@ -298,11 +298,10 @@ function closeWelcome() {
  * Exportación a PDF de Reporte Completo (Consolidado) o Página Actual
  */
 async function exportToPDF(option = 'full') {
-    const btn = document.getElementById('export-main-btn');
-    const originalText = btn.innerHTML;
-    btn.innerHTML = "Generando...";
-    btn.disabled = true;
-    document.getElementById('export-options').classList.remove('show');
+    const originalText = document.querySelector('.export-btn').innerHTML;
+    document.querySelector('.export-btn').innerHTML = "Generando...";
+    document.querySelector('.export-btn').disabled = true;
+    closeDownloadModal();
 
     try {
         const tempContainer = document.createElement('div');
@@ -395,21 +394,18 @@ async function exportToPDF(option = 'full') {
     } finally {
         const temp = document.getElementById('pdf-export-container');
         if (temp) document.body.removeChild(temp);
-        btn.innerHTML = originalText;
-        btn.disabled = false;
+        document.querySelector('.export-btn').innerHTML = originalText;
+        document.querySelector('.export-btn').disabled = false;
     }
 }
 
-// Lógica para el menú desplegable de exportación
-document.addEventListener('click', (e) => {
-    const menu = document.getElementById('export-options');
-    const btn = document.getElementById('export-main-btn');
-    if (btn && btn.contains(e.target)) {
-        menu.classList.toggle('show');
-    } else if (menu && !menu.contains(e.target)) {
-        menu.classList.remove('show');
-    }
-});
+function openDownloadModal() {
+    document.getElementById('download-modal').classList.add('show');
+}
+
+function closeDownloadModal() {
+    document.getElementById('download-modal').classList.remove('show');
+}
 
 
 /**

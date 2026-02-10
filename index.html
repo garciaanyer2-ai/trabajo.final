@@ -39,19 +39,15 @@
             <button class="tab-btn" onclick="switchTab('mapa', this)">📍 Geolocalización</button>
 
             <div class="export-container">
-                <button class="export-btn" id="export-main-btn">
+                <button class="export-btn" onclick="openDownloadModal()">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                         <polyline points="7 10 12 15 17 10"></polyline>
                         <line x1="12" y1="15" x2="12" y2="3"></line>
                     </svg>
-                    Exportar PDF ▼
+                    Descargar
                 </button>
-                <div class="export-options" id="export-options">
-                    <div class="option-item" onclick="exportToPDF('current')">📄 Solo esta página</div>
-                    <div class="option-item" onclick="exportToPDF('full')">📚 Proyecto completo</div>
-                </div>
             </div>
         </nav>
 
@@ -67,6 +63,27 @@
         <footer>
             <p>&copy; 2026 Anyerlin Ravelo - Maestría en Ciberseguridad y Operaciones</p>
         </footer>
+    </div>
+
+    <!-- Modal de Selección de Descarga -->
+    <div id="download-modal" class="modal-overlay">
+        <div class="modal-card">
+            <h3>Seleccionar Reporte</h3>
+            <p>¿Qué versión del informe de inteligencia deseas obtener?</p>
+            <div class="modal-options">
+                <button class="modal-opt-btn" onclick="exportToPDF('current')">
+                    <span class="icon">📄</span>
+                    <span class="text">Solo esta página</span>
+                    <span class="subtext">Descarga la vista actual (.pdf)</span>
+                </button>
+                <button class="modal-opt-btn highlighted" onclick="exportToPDF('full')">
+                    <span class="icon">📚</span>
+                    <span class="text">Proyecto completo</span>
+                    <span class="subtext">Todas las secciones consolidadas (.pdf)</span>
+                </button>
+            </div>
+            <button class="modal-close" onclick="closeDownloadModal()">Cancelar</button>
+        </div>
     </div>
 
     <!-- Sonido de inicio opcional (comentado) -->
