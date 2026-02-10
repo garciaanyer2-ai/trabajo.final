@@ -16,7 +16,7 @@ En el grafico se observa un patron divergente en el gasto militar de los paises 
 
 ### Prompt que usaste para generar este grafico
 
-**Herramienta:** Claude
+**Herramienta:** Claude & Gemini
 
 **Tu prompt exacto:**
 ```
@@ -38,7 +38,7 @@ El grafico muestra una degradacion institucional severa en paises con altos nive
 
 ### Prompt que usaste para generar este grafico
 
-**Herramienta:** Claude
+**Herramienta:** Claude & Gemini
 
 **Tu prompt exacto:**
 ```

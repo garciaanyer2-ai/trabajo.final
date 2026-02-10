@@ -87,7 +87,7 @@ Se observa un patrón divergente. España y Francia muestran estabilidad institu
 ## 3.3 Respuesta a mi pregunta de investigacion
 La relación entre gasto militar y democracia es inversamente proporcional en regímenes híbridos bajo amenaza yihadista. En democracias consolidadas, el gasto de seguridad no compromete las libertades.`,
 
-    '04_REFLEXION_IA.md': `# Paso 4: Reflexion IA - Proceso de Aprendizaje
+    '04_REFLEXION_IA.md': `# Paso 4: Reflexión IA (Claude & Gemini) - Proceso de Aprendizaje
 
 ## Bloque A: Infraestructura
 **Aprendizaje:** El uso de PowerShell para procesar archivos grandes fue clave.

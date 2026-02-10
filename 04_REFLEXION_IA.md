@@ -2,7 +2,7 @@
 
 **Alumno:** Anyerlin Ravelo
 
-> **Nota Personal:** Este documento resume cómo me las he arreglado para sacar adelante este proyecto. He pasado de no tener ni idea de cómo abrir un CSV gigante a pelearme con tests estadísticos de nivel avanzado. Aquí cuento la verdad de mis errores y mis prompts.
+> **Nota Personal:** Este documento resume cómo me las he arreglado para sacar adelante este proyecto. He pasado de no tener ni idea de cómo abrir un CSV gigante a pelearme con tests estadísticos de nivel avanzado. Aquí cuento la verdad de mis errores y mis prompts, utilizando el apoyo de **Claude y Gemini** para superar cada obstáculo técnico.
 
 ---
 

@@ -106,7 +106,7 @@ Los healthchecks son pruebas que Docker realiza para saber si un servicio está 
 
 ### Prompt 1 (el primero que usaste):
 
-**Herramienta:** Claude
+**Herramienta:** Claude & Gemini
 
 **Tu prompt exacto:**
 ```
@@ -123,7 +123,7 @@ Tuve que añadir la sección de `volumes` específica de PostgreSQL para que los
 
 ### Prompt 2 (si iteraste o pediste correccion):
 
-**Herramienta:** Claude
+**Herramienta:** Claude & Gemini
 
 **Tu prompt exacto:**
 ```
