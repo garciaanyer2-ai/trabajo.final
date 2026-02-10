@@ -295,17 +295,16 @@ function closeWelcome() {
 }
 
 /**
- * Exportación a PDF de Reporte Completo (Consolidado)
- * Versión de alta compatibilidad (Fondo Blanco / Texto Negro)
+ * Exportación a PDF de Reporte Completo (Consolidado) o Página Actual
  */
-async function exportToPDF() {
-    const btn = document.querySelector('.export-btn');
+async function exportToPDF(option = 'full') {
+    const btn = document.getElementById('export-main-btn');
     const originalText = btn.innerHTML;
     btn.innerHTML = "Generando...";
     btn.disabled = true;
+    document.getElementById('export-options').classList.remove('show');
 
     try {
-        // 1. Crear contenedor temporal con estilos "impresora-friendly"
         const tempContainer = document.createElement('div');
         tempContainer.id = 'pdf-export-container';
 
@@ -313,113 +312,77 @@ async function exportToPDF() {
             position: 'absolute',
             top: '0',
             left: '0',
-            width: '750px', // Un poco más estrecho para asegurar márgenes
+            width: '750px',
             background: '#ffffff',
             color: '#000000',
             zIndex: '999999',
             padding: '40px',
-            fontFamily: 'Arial, sans-serif', // Fuente estándar para fallos
+            fontFamily: 'Arial, sans-serif',
             lineHeight: '1.5'
         });
         document.body.appendChild(tempContainer);
 
-        // 2. Título General
+        // Cabecera común
         tempContainer.innerHTML = `
             <div style="text-align: center; margin-bottom: 50px; border-bottom: 3px solid #ff6b00; padding-bottom: 20px;">
                 <h1 style="color: #ff6b00; margin-bottom: 5px;">INFORME DE INTELIGENCIA</h1>
-                <p style="color: #666; font-weight: bold;">Anyerlin Ravelo - Caso: Gasto Militar y Democracia</p>
-                <p style="font-size: 12px; color: #999;">Generado el: ${new Date().toLocaleString()}</p>
+                <p style="color: #666; font-weight: bold;">Anyerlin Ravelo - Geopolítica y Defensa</p>
+                <p style="font-size: 12px; color: #999;">${option === 'current' ? 'Página Individual' : 'Proyecto Completo'} • ${new Date().toLocaleString()}</p>
             </div>
         `;
 
-        // 3. Secciones Informativas
-        const sections = ['01_README.md', '02_INFRAESTRUCTURA.md', '03_RESULTADOS.md', 'dashboard', '04_REFLEXION_IA.md', '05_RESPUESTAS.md'];
+        let sectionsToExport = [];
+        if (option === 'current') {
+            // Intentar detectar qué pestaña está activa analizando el botón .active
+            const activeBtn = document.querySelector('.tab-btn.active');
+            // Buscaremos el nombre del archivo en el atributo onclick de forma sencilla
+            const activeKey = Array.from(Object.keys(projectContent)).find(key =>
+                activeBtn && activeBtn.getAttribute('onclick').includes(key)
+            ) || '01_README.md';
+            sectionsToExport = [activeKey];
+        } else {
+            sectionsToExport = ['01_README.md', '02_INFRAESTRUCTURA.md', '03_RESULTADOS.md', 'dashboard', '04_REFLEXION_IA.md', '05_RESPUESTAS.md'];
+        }
 
-        for (const key of sections) {
+        for (const key of sectionsToExport) {
             const content = projectContent[key];
             if (!content) continue;
 
-            const sectionTitle = key.replace(/_/g, ' ').replace('.md', '').toUpperCase();
             const sectionWrap = document.createElement('div');
             sectionWrap.style.marginBottom = '40px';
-
-            // Estilos específicos para la sección dentro del PDF
-            sectionWrap.innerHTML = `
-                <h2 style="color:#ff6b00; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-top: 30px;">
-                    ${sectionTitle}
-                </h2>
-            `;
+            sectionWrap.innerHTML = `<h2 style="color:#ff6b00; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-top: 30px;">${key.replace(/_/g, ' ').replace('.md', '').toUpperCase()}</h2>`;
 
             if (key === 'dashboard') {
-                // Simplificar dashboard para PDF
-                const dbHtml = content
-                    .replace('id="milChart"', `id="pdf-milChart"`)
-                    .replace('id="demChart"', `id="pdf-demChart"`)
-                    .replace(/var\(--accent-color\)/g, '#ff6b00')
-                    .replace(/color:white/g, 'color:black'); // Forzar texto oscuro
-
-                // Quitar estilos de card oscuros en el clon del dashboard
+                const dbHtml = content.replace('id="milChart"', `id="p-mil"`).replace('id="demChart"', `id="p-dem"`);
                 const div = document.createElement('div');
                 div.innerHTML = dbHtml;
-                div.querySelectorAll('.kpi-card, .chart-card').forEach(card => {
-                    card.style.background = '#f9f9f9';
-                    card.style.border = '1px solid #ddd';
-                    card.style.color = '#000';
-                    card.style.boxShadow = 'none';
-                    card.style.transform = 'none';
+                div.querySelectorAll('.kpi-card, .chart-card').forEach(c => {
+                    Object.assign(c.style, { background: '#f9f9f9', border: '1px solid #ddd', color: '#000', boxShadow: 'none', transform: 'none' });
                 });
-                div.querySelectorAll('.value').forEach(v => v.style.color = '#000');
-
                 sectionWrap.appendChild(div);
                 tempContainer.appendChild(sectionWrap);
-
-                // Renderizar gráficos con fondo blanco
-                await renderPdfChartsWhite('pdf-milChart', 'pdf-demChart');
+                await renderPdfChartsWhite('p-mil', 'p-dem');
+            } else if (key === 'mapa') {
+                sectionWrap.innerHTML += '<p style="font-style:italic; color:#666;">[Nota: El mapa interactivo se visualiza mejor en la web live]</p>';
+                tempContainer.appendChild(sectionWrap);
             } else {
-                // Renderizar Markdown
-                const rendered = marked.parse(content);
                 const contentDiv = document.createElement('div');
-                contentDiv.className = 'pdf-markdown-content';
-                contentDiv.innerHTML = rendered;
-
-                // Ajustar estilos de links e imágenes en el PDF
-                contentDiv.querySelectorAll('a').forEach(a => a.style.color = '#ff6b00');
-                contentDiv.querySelectorAll('img').forEach(img => {
-                    img.style.maxWidth = '100%';
-                    img.style.margin = '20px 0';
-                    img.style.borderRadius = '8px';
+                contentDiv.innerHTML = marked.parse(content);
+                contentDiv.querySelectorAll('table').forEach(t => {
+                    Object.assign(t.style, { width: '100%', borderCollapse: 'collapse', border: '1px solid #ddd' });
+                    t.querySelectorAll('th, td').forEach(c => { c.style.padding = '8px'; c.style.border = '1px solid #ddd'; });
                 });
-                contentDiv.querySelectorAll('table').forEach(table => {
-                    table.style.width = '100%';
-                    table.style.borderCollapse = 'collapse';
-                    table.style.marginBottom = '20px';
-                    table.style.border = '1px solid #ddd';
-                    table.querySelectorAll('th, td').forEach(cell => {
-                        cell.style.padding = '8px';
-                        cell.style.border = '1px solid #ddd';
-                        cell.style.textAlign = 'left';
-                    });
-                    table.querySelectorAll('th').forEach(th => th.style.background = '#f5f5f5');
-                });
-
                 sectionWrap.appendChild(contentDiv);
                 tempContainer.appendChild(sectionWrap);
             }
-
-            tempContainer.innerHTML += '<div style="page-break-after: always; height: 1px;"></div>';
+            tempContainer.innerHTML += '<div style="page-break-after: always;"></div>';
         }
 
-        // 4. Configuración
         const opt = {
             margin: 15,
-            filename: `Reporte_Anyerlin_Ravelo.pdf`,
+            filename: `Reporte_${option}_${new Date().toISOString().slice(0, 10)}.pdf`,
             image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: {
-                scale: 2,
-                useCORS: true,
-                backgroundColor: '#ffffff',
-                logging: false
-            },
+            html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
 
@@ -428,8 +391,7 @@ async function exportToPDF() {
 
     } catch (error) {
         console.error("PDF Error:", error);
-        alert("El sistema de PDF está saturado o bloqueado. Intentando método alternativo...");
-        window.print(); // Fallback final
+        window.print();
     } finally {
         const temp = document.getElementById('pdf-export-container');
         if (temp) document.body.removeChild(temp);
@@ -437,6 +399,18 @@ async function exportToPDF() {
         btn.disabled = false;
     }
 }
+
+// Lógica para el menú desplegable de exportación
+document.addEventListener('click', (e) => {
+    const menu = document.getElementById('export-options');
+    const btn = document.getElementById('export-main-btn');
+    if (btn && btn.contains(e.target)) {
+        menu.classList.toggle('show');
+    } else if (menu && !menu.contains(e.target)) {
+        menu.classList.remove('show');
+    }
+});
+
 
 /**
  * Versión de gráficos para fondo blanco

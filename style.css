@@ -283,19 +283,24 @@ header p {
     box-shadow: 0 0 20px var(--accent-glow);
 }
 
+.export-container {
+    position: relative;
+    display: inline-block;
+}
+
 .export-btn {
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid var(--accent-color);
     color: white;
-    padding: 12px 24px;
+    padding: 10px 20px;
     border-radius: 50px;
     cursor: pointer;
     font-family: 'Outfit', sans-serif;
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     font-weight: 600;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     transition: var(--transition);
 }
 
@@ -303,6 +308,40 @@ header p {
     background: var(--accent-color);
     box-shadow: 0 0 15px var(--accent-glow);
     transform: translateY(-2px);
+}
+
+.export-options {
+    position: absolute;
+    top: 110%;
+    right: 0;
+    background: #0a0b14;
+    border: 1px solid var(--accent-color);
+    border-radius: 12px;
+    padding: 10px 0;
+    width: 200px;
+    z-index: 1000;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+    display: none;
+    animation: scaleIn 0.2s ease-out;
+}
+
+.export-options.show {
+    display: block;
+}
+
+.option-item {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    padding: 12px 20px;
+    color: #cbd5e1;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.option-item:hover {
+    background: rgba(255, 107, 0, 0.15);
+    color: var(--accent-color);
+    padding-left: 25px;
 }
 
 .export-btn svg {
