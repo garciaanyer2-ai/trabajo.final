@@ -12,7 +12,7 @@
 
 ### 🔗 Contacto Operativo
 [![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/cutgore__art?igsh=YWV2ZmQwdWc0ZThv&utm_source=qr)
-[![TikTok](https://img.shields.io/badge/TikTok-000000?style=for-the-badge&logo=tiktok&logoColor=white)](https://vm.tiktok.com/ZNRyF3Ps5/)
+[![TikTok](https://img.shields.io/badge/TikTok-000000?style=for-the-badge&logo=tiktok&logoColor=white)](https://www.tiktok.com/@cutgore_art?_r=1&_d=efgghd88i0dk0e&sec_uid=MS4wLjABAAAAI18_RGmzLomStNJpFMCHqgj8hGipGNqHPTl0O6NB1OgP-rpINIKwWPZIYzxIghRb&share_author_id=7165237987347825669&sharer_language=es&source=h5_m&u_code=e4m2e6k4ihj010&item_author_type=1&utm_source=whatsapp&tt_from=whatsapp&enable_checksum=1&utm_medium=ios&share_link_id=C916EB41-2806-40A2-838F-93040C95F424&user_id=7165237987347825669&sec_user_id=MS4wLjABAAAAI18_RGmzLomStNJpFMCHqgj8hGipGNqHPTl0O6NB1OgP-rpINIKwWPZIYzxIghRb&social_share_type=5&ug_btm=b8727,b0&utm_campaign=client_share&share_app_id=1233)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/anyer-garcia-2b88b8392/)
 
 ---
