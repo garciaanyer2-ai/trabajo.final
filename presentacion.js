@@ -143,6 +143,13 @@ La relación entre gasto militar y democracia es inversamente proporcional en re
                 <div style="height: 300px;"><canvas id="demChart"></canvas></div>
             </div>
         </div>
+    `,
+    'mapa': `
+        <div class="map-header">
+            <h2>📍 Vector de Despliegue Geopolítico</h2>
+            <p>Ubicación estratégica de los activos analizados en el informe.</p>
+        </div>
+        <div id="map-container"></div>
     `
 };
 
@@ -167,6 +174,9 @@ function switchTab(fileName, btn) {
             area.innerHTML = content;
             // Necesitamos esperar a que el DOM se actualice para inicializar Chart.js
             setTimeout(initDashboard, 50);
+        } else if (fileName === 'mapa') {
+            area.innerHTML = content;
+            setTimeout(initMap, 50);
         } else {
             area.innerHTML = marked.parse(content);
         }
@@ -227,6 +237,35 @@ function initDashboard() {
     activeCharts.push(milChart, demChart);
 }
 
+function initMap() {
+    // Evitar reinicializar si ya existe (Leaflet daría error)
+    const container = L.DomUtil.get('map-container');
+    if (container !== null) {
+        container._leaflet_id = null;
+    }
+
+    const map = L.map('map-container').setView([40, 30], 3);
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        subdomains: 'abcd',
+        maxZoom: 20
+    }).addTo(map);
+
+    const locations = [
+        { name: "España (ESP)", coords: [40.4637, -3.7492], detail: "Referente europeo de estabilidad." },
+        { name: "Francia (FRA)", coords: [46.2276, 2.2137], detail: "Respuesta militar activa y consolidada." },
+        { name: "Turquía (TUR)", coords: [38.9637, 35.2433], detail: "Puente estratégico - Tendencia autocrática." },
+        { name: "Afganistán (AFG)", coords: [33.9391, 67.7100], detail: "Epicentro de conflicto y colapso institucional." },
+        { name: "Rusia (RUS)", coords: [55.7558, 37.6173], detail: "Crecimiento militar agresivo y autocracia." }
+    ];
+
+    locations.forEach(loc => {
+        L.marker(loc.coords).addTo(map)
+            .bindPopup(`<b>${loc.name}</b><br>${loc.detail}`);
+    });
+}
+
 // Carga inicial
 document.addEventListener('DOMContentLoaded', () => {
     switchTab('01_README.md', document.querySelector('.tab-btn'));
@@ -257,61 +296,212 @@ function closeWelcome() {
 
 /**
  * Exportación a PDF de Reporte Completo (Consolidado)
+ * Versión de alta compatibilidad (Fondo Blanco / Texto Negro)
  */
 async function exportToPDF() {
     const btn = document.querySelector('.export-btn');
     const originalText = btn.innerHTML;
-    btn.innerHTML = "Generando Reporte...";
+    btn.innerHTML = "Generando...";
     btn.disabled = true;
 
-    // Crear contenedor temporal para el reporte completo
-    const tempContainer = document.createElement('div');
-    tempContainer.className = 'markdown-body full-report-pdf';
-    tempContainer.style.padding = '40px';
-    tempContainer.style.background = '#08090d';
-    tempContainer.style.color = '#f1f5f9';
-    tempContainer.style.position = 'absolute';
-    tempContainer.style.left = '-9999px';
-    document.body.appendChild(tempContainer);
-
-    // 1. Añadir Portada / Info Personal
-    const profile = document.querySelector('.welcome-card').cloneNode(true);
-    const accessBtn = profile.querySelector('.access-btn');
-    if (accessBtn) accessBtn.remove();
-    tempContainer.appendChild(profile);
-    tempContainer.innerHTML += '<div class="page-break" style="page-break-after: always;"></div>';
-
-    // 2. Recorrer todos los contenidos de las pestañas
-    for (const [key, content] of Object.entries(projectContent)) {
-        const sectionTitle = key.replace(/_/g, ' ').replace('.md', '').toUpperCase();
-        tempContainer.innerHTML += `<h1 style="color:var(--accent-color); margin-top:40px; border-bottom: 2px solid var(--accent-color); padding-bottom: 10px;">${sectionTitle}</h1>`;
-
-        if (key === 'dashboard') {
-            tempContainer.innerHTML += `<div class="dashboard-preview">${content}</div>`;
-        } else {
-            tempContainer.innerHTML += marked.parse(content);
-        }
-        tempContainer.innerHTML += '<div class="page-break" style="page-break-after: always;"></div>';
-    }
-
-    const opt = {
-        margin: [10, 10],
-        filename: 'Reporte_Completo_Anyerlin_Ravelo.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, backgroundColor: '#08090d' },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    };
-
     try {
+        // 1. Crear contenedor temporal con estilos "impresora-friendly"
+        const tempContainer = document.createElement('div');
+        tempContainer.id = 'pdf-export-container';
+
+        Object.assign(tempContainer.style, {
+            position: 'absolute',
+            top: '0',
+            left: '0',
+            width: '750px', // Un poco más estrecho para asegurar márgenes
+            background: '#ffffff',
+            color: '#000000',
+            zIndex: '999999',
+            padding: '40px',
+            fontFamily: 'Arial, sans-serif', // Fuente estándar para fallos
+            lineHeight: '1.5'
+        });
+        document.body.appendChild(tempContainer);
+
+        // 2. Título General
+        tempContainer.innerHTML = `
+            <div style="text-align: center; margin-bottom: 50px; border-bottom: 3px solid #ff6b00; padding-bottom: 20px;">
+                <h1 style="color: #ff6b00; margin-bottom: 5px;">INFORME DE INTELIGENCIA</h1>
+                <p style="color: #666; font-weight: bold;">Anyerlin Ravelo - Caso: Gasto Militar y Democracia</p>
+                <p style="font-size: 12px; color: #999;">Generado el: ${new Date().toLocaleString()}</p>
+            </div>
+        `;
+
+        // 3. Secciones Informativas
+        const sections = ['01_README.md', '02_INFRAESTRUCTURA.md', '03_RESULTADOS.md', 'dashboard', '04_REFLEXION_IA.md', '05_RESPUESTAS.md'];
+
+        for (const key of sections) {
+            const content = projectContent[key];
+            if (!content) continue;
+
+            const sectionTitle = key.replace(/_/g, ' ').replace('.md', '').toUpperCase();
+            const sectionWrap = document.createElement('div');
+            sectionWrap.style.marginBottom = '40px';
+
+            // Estilos específicos para la sección dentro del PDF
+            sectionWrap.innerHTML = `
+                <h2 style="color:#ff6b00; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-top: 30px;">
+                    ${sectionTitle}
+                </h2>
+            `;
+
+            if (key === 'dashboard') {
+                // Simplificar dashboard para PDF
+                const dbHtml = content
+                    .replace('id="milChart"', `id="pdf-milChart"`)
+                    .replace('id="demChart"', `id="pdf-demChart"`)
+                    .replace(/var\(--accent-color\)/g, '#ff6b00')
+                    .replace(/color:white/g, 'color:black'); // Forzar texto oscuro
+
+                // Quitar estilos de card oscuros en el clon del dashboard
+                const div = document.createElement('div');
+                div.innerHTML = dbHtml;
+                div.querySelectorAll('.kpi-card, .chart-card').forEach(card => {
+                    card.style.background = '#f9f9f9';
+                    card.style.border = '1px solid #ddd';
+                    card.style.color = '#000';
+                    card.style.boxShadow = 'none';
+                    card.style.transform = 'none';
+                });
+                div.querySelectorAll('.value').forEach(v => v.style.color = '#000');
+
+                sectionWrap.appendChild(div);
+                tempContainer.appendChild(sectionWrap);
+
+                // Renderizar gráficos con fondo blanco
+                await renderPdfChartsWhite('pdf-milChart', 'pdf-demChart');
+            } else {
+                // Renderizar Markdown
+                const rendered = marked.parse(content);
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'pdf-markdown-content';
+                contentDiv.innerHTML = rendered;
+
+                // Ajustar estilos de links e imágenes en el PDF
+                contentDiv.querySelectorAll('a').forEach(a => a.style.color = '#ff6b00');
+                contentDiv.querySelectorAll('img').forEach(img => {
+                    img.style.maxWidth = '100%';
+                    img.style.margin = '20px 0';
+                    img.style.borderRadius = '8px';
+                });
+                contentDiv.querySelectorAll('table').forEach(table => {
+                    table.style.width = '100%';
+                    table.style.borderCollapse = 'collapse';
+                    table.style.marginBottom = '20px';
+                    table.style.border = '1px solid #ddd';
+                    table.querySelectorAll('th, td').forEach(cell => {
+                        cell.style.padding = '8px';
+                        cell.style.border = '1px solid #ddd';
+                        cell.style.textAlign = 'left';
+                    });
+                    table.querySelectorAll('th').forEach(th => th.style.background = '#f5f5f5');
+                });
+
+                sectionWrap.appendChild(contentDiv);
+                tempContainer.appendChild(sectionWrap);
+            }
+
+            tempContainer.innerHTML += '<div style="page-break-after: always; height: 1px;"></div>';
+        }
+
+        // 4. Configuración
+        const opt = {
+            margin: 15,
+            filename: `Reporte_Anyerlin_Ravelo.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: {
+                scale: 2,
+                useCORS: true,
+                backgroundColor: '#ffffff',
+                logging: false
+            },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        await new Promise(r => setTimeout(r, 1200));
         await html2pdf().from(tempContainer).set(opt).save();
-    } catch (e) {
-        console.error("Error al exportar PDF:", e);
+
+    } catch (error) {
+        console.error("PDF Error:", error);
+        alert("El sistema de PDF está saturado o bloqueado. Intentando método alternativo...");
+        window.print(); // Fallback final
     } finally {
-        document.body.removeChild(tempContainer);
+        const temp = document.getElementById('pdf-export-container');
+        if (temp) document.body.removeChild(temp);
         btn.innerHTML = originalText;
         btn.disabled = false;
     }
 }
+
+/**
+ * Versión de gráficos para fondo blanco
+ */
+async function renderPdfChartsWhite(milId, demId) {
+    return new Promise((resolve) => {
+        // Esperamos un tick del event loop para asegurar que los elementos existen en el DOM
+        setTimeout(() => {
+            const ctxMil = document.getElementById(milId);
+            const ctxDem = document.getElementById(demId);
+
+            if (!ctxMil || !ctxDem) {
+                console.warn("No se encontraron los lienzos para los gráficos del PDF");
+                resolve();
+                return;
+            }
+
+            const labels = ['2000', '2010', '2020', '2023'];
+            const chartOptions = {
+                responsive: false, // Desactivar responsive para tamaño fijo en PDF
+                animation: false,  // Desactivar animaciones para captura inmediata
+                plugins: {
+                    legend: { labels: { color: '#94a3b8' } }
+                },
+                scales: {
+                    y: { grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#94a3b8' } },
+                    x: { ticks: { color: '#94a3b8' } }
+                }
+            };
+
+            new Chart(ctxMil, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        { label: 'España', data: [1.2, 1.1, 1.2, 1.3], borderColor: '#6366f1', tension: 0.3 },
+                        { label: 'Francia', data: [2.1, 2.0, 2.1, 2.2], borderColor: '#f8fafc', tension: 0.3 },
+                        { label: 'Turquía', data: [3.5, 2.1, 2.5, 2.8], borderColor: '#fbbf24', tension: 0.3 },
+                        { label: 'Rusia', data: [3.5, 3.8, 4.1, 4.5], borderColor: '#f43f5e', tension: 0.3 },
+                        { label: 'Afganistán', data: [1.0, 1.5, 11.5, 1.0], borderColor: '#10b981', tension: 0.3 }
+                    ]
+                },
+                options: chartOptions
+            });
+
+            new Chart(ctxDem, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        { label: 'España', data: [0.85, 0.84, 0.81, 0.82], borderColor: '#6366f1', tension: 0.3 },
+                        { label: 'Francia', data: [0.84, 0.83, 0.82, 0.81], borderColor: '#f8fafc', tension: 0.3 },
+                        { label: 'Turquía', data: [0.42, 0.48, 0.15, 0.12], borderColor: '#fbbf24', tension: 0.3 },
+                        { label: 'Rusia', data: [0.38, 0.25, 0.12, 0.08], borderColor: '#f43f5e', tension: 0.3 },
+                        { label: 'Afganistán', data: [0.05, 0.22, 0.18, 0.01], borderColor: '#10b981', tension: 0.3 }
+                    ]
+                },
+                options: chartOptions
+            });
+
+            resolve();
+        }, 100);
+    });
+}
+
 
 function initParticles() {
     const canvas = document.getElementById('particles-canvas');
